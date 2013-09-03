@@ -6,6 +6,7 @@ using namespace std;
 
 SchedFCFS::SchedFCFS(vector<int> argn) {
 	// FCFS recibe la cantidad de cores.
+	
 }
 
 SchedFCFS::~SchedFCFS() {

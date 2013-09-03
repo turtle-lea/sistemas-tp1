@@ -12,10 +12,28 @@ SchedFCFS::~SchedFCFS() {
 }
 
 void SchedFCFS::load(int pid) {
+	tareas.push(pid);
 }
 
 void SchedFCFS::unblock(int pid) {
 }
 
 int SchedFCFS::tick(int cpu, const enum Motivo m) {
+	int proxima = current_pid(cpu);
+	if (proxima == IDLE_TASK && !tareas.empty()) {
+		proxima= tareas.front();
+		tareas.pop();
+	}
+
+	if (m == EXIT){
+		if(tareas.empty()){
+			return IDLE_TASK;
+		}
+		else{
+			proxima= tareas.front();
+			tareas.pop();
+		}		
+	}
+
+	return proxima;	
 }

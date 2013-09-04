@@ -7,12 +7,12 @@
 using namespace std;
 
 SchedRR::SchedRR(vector<int> argn) {
-	// Round robin recibe la cantidad de cores y sus cpu_quantum por parámetro
+	// Round robin recibe la cantidad de cores y sus cpu_quantum por parámetro (MAX_QUANTUM)
 	
 	cores = argn[0];
 	for(int i = 1; i <= cores; i++){
-		cpu_quantum.push_back(argn[i]);
-		tareas_quantum.push_back(0);
+		max_quantum.push_back(argn[i]);
+		cpu_quantum.push_back(0);
 	}
 }
 
@@ -26,46 +26,46 @@ void SchedRR::load(int pid) {
 }
 
 void SchedRR::unblock(int pid) {
-	
+	tareas.push(pid);
 }
 
 int SchedRR::tick(int cpu, const enum Motivo m) {
 	int actual = current_pid(cpu);
+	
 	if(m == EXIT){
 		if(!tareas.empty()){
-			actual = tareas.front();
-			tareas.pop();
-			tareas_quantum[cpu] = 0;
+			actual = next(cpu);
 		}else{
 			actual = IDLE_TASK;
 		}
-	}else{
-		if(actual == IDLE_TASK){
-			actual = next2(actual, cpu);
-		}
-		if(actual != IDLE_TASK){
-			tareas_quantum[cpu]++;
-			//if(tareas_quantum[cpu] >= cpu_quantum[cpu]){
-				actual = next2(actual,cpu);
-			//}
-		}	
 	}
+	
+	if(m == TICK){
+		if(actual == IDLE_TASK){
+			if(!tareas.empty()){
+				actual = next(cpu);				
+			}
+		}else{
+			cpu_quantum[cpu]++;	
+			if(cpu_quantum[cpu] == max_quantum[cpu]){
+				tareas.push(actual);
+				actual = next(cpu);
+			}
+		}
+	}
+	
+	if(m == BLOCK) {
+		cpu_quantum[cpu]++;			
+		if(!tareas.empty()){
+			actual = next(cpu);
+		}
+	}
+		
 	return actual;
 }
 int SchedRR::next(int cpu){
-	int prox = 0;
-	return prox;
-}
-
-int SchedRR::next2(int pid, int cpu) {
-	int prox;
-	if(!tareas.empty()){
-		if(pid != IDLE_TASK) tareas.push(pid);
-		prox = tareas.front();
-		tareas.pop();
-		tareas_quantum[cpu] = 0;
-	}else{
-		prox = IDLE_TASK;
-	}
+	int prox = tareas.front();
+	tareas.pop();
+	cpu_quantum[cpu] = 0;
 	return prox;
 }

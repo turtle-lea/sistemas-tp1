@@ -3,7 +3,7 @@ TaskCPU 5
 @0:
 *2 TaskConsola 8 0 10
 @3:
-TaskCPU 8
+TaskCPU 10
 @5:
 TaskCPU 2
 

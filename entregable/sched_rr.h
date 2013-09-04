@@ -15,6 +15,13 @@ class SchedRR : public SchedBase {
 
 	private:
 		int next(int cpu);
+		int next2(int pid, int cpu);
+		
+		int cores;
+		std::vector<int> cpu_quantum;
+		std::vector<int> tareas_quantum;
+		
+		std::queue<int> tareas;
 };
 
 #endif

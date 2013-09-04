@@ -1,5 +1,6 @@
 #include "tasks.h"
 #include <stdlib.h>
+#include <sys/time.h>
 
 using namespace std;
 
@@ -20,6 +21,23 @@ void TaskAlterno(int pid, vector<int> params) { // params: ms_pid, ms_io, ms_pid
 }
 
 void TaskConsola(int pid, vector<int> params) { //params: n, bmin, bmax
+
+    struct timeval time; 
+    gettimeofday(&time,NULL);
+
+     // microsecond has 1 000 000
+     // Assuming you did not need quite that accuracy
+     // Also do not assume the system clock has that accuracy.
+    srand((time.tv_sec * 1000) + (time.tv_usec / 1000));
+
+     // The trouble here is that the seed will repeat every
+     // 24 days or so.
+
+     // If you use 100 (rather than 1000) the seed repeats every 248 days.
+
+     // Do not make the MISTAKE of using just the tv_usec
+     // This will mean your seed repeats every second.
+
 	int n = params[0];
 	int bmin = params[1];
 	int bmax = params[2];

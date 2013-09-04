@@ -23,5 +23,6 @@ struct ptsk {
 	ptsk(TaskBase* vtsk, const std::vector<int>& vprms, unsigned int vstart);
 	ptsk(void);
 };
+
 std::vector<ptsk> tasks_load(const char* filename);
 #endif

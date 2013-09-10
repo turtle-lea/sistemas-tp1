@@ -8,6 +8,41 @@ void TaskCPU(int pid, vector<int> params) { // params: n
 	uso_CPU(pid, params[0]); // Uso el CPU n milisegundos.
 }
 
+void TaskBatch(int pid, vector<int> params) { // params: total_cpu, cant_bloqueos
+	int total_cpu = params[0];
+	int cant_bloqueos = params[1];		///total_cpu >= cant_bloqueos
+		
+	total_cpu = total_cpu - cant_bloqueos - 1; //le quito a total_cpu los tiempos de llamada a funcion bloqueante y return.
+	/* luego puedo utilizar total_cpu para distribuir mis llamadas bloqueantes */
+	/// si total_cpu = 0 hay que ejecutar las bloqueantes al hilo
+	
+	struct timeval time; 
+    gettimeofday(&time,NULL);
+    srand((time.tv_sec * 1000) + (time.tv_usec / 1000));
+    int r;
+    int bmax = 20;
+    int bmin = 1;
+    
+	while(total_cpu > 0 && cant_bloqueos > 0){
+		r = bmin + (rand()%(bmax-bmin+1));
+		if (r == 5 || r == 8 ||r == 12 ){
+			uso_IO(pid,1);
+			cant_bloqueos--;
+			//bmax = 10;
+		}else{
+			uso_CPU(pid,1);
+			total_cpu--;
+			//bmax--;
+		}
+	} // total_cpu == 0 || cant_bloqueos == 0
+	if(total_cpu > 0){
+		uso_CPU(pid,total_cpu);
+	}
+	if(cant_bloqueos > 0){
+		for(int i = 0; i < cant_bloqueos; i++) uso_IO(pid,1);
+	}
+}
+
 void TaskIO(int pid, vector<int> params) { // params: ms_pid, ms_io,
 	uso_CPU(pid, params[0]); // Uso el CPU ms_pid milisegundos.
 	uso_IO(pid, params[1]); // Uso IO ms_io milisegundos.
@@ -24,19 +59,7 @@ void TaskConsola(int pid, vector<int> params) { //params: n, bmin, bmax
 
     struct timeval time; 
     gettimeofday(&time,NULL);
-
-     // microsecond has 1 000 000
-     // Assuming you did not need quite that accuracy
-     // Also do not assume the system clock has that accuracy.
     srand((time.tv_sec * 1000) + (time.tv_usec / 1000));
-
-     // The trouble here is that the seed will repeat every
-     // 24 days or so.
-
-     // If you use 100 (rather than 1000) the seed repeats every 248 days.
-
-     // Do not make the MISTAKE of using just the tv_usec
-     // This will mean your seed repeats every second.
 
 	int n = params[0];
 	int bmin = params[1];
@@ -56,4 +79,5 @@ void tasks_init(void) {
 	register_task(TaskIO, 2);
 	register_task(TaskAlterno, -1);
 	register_task(TaskConsola, 3);
+	register_task(TaskBatch, 2);
 }

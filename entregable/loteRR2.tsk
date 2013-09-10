@@ -1,0 +1,20 @@
+@1: 
+TaskCPU 5
+@0:
+TaskConsola 6 0 10
+@3:
+TaskCPU 10
+@5:
+TaskCPU 2
+@1: 
+TaskCPU 5
+@4:
+TaskConsola 4 0 10
+@3:
+TaskCPU 10
+@6:
+TaskCPU 2
+
+# En orden de llegada 1 - 0,4 - 2,6 - 5 - 3 - 7
+# 0: 1 4 6 3
+# 1: 0 2 5 7

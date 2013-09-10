@@ -1,0 +1,9 @@
+TaskConsola 16 1 2
+#TaskConsola 8 0 1
+TaskCPU 16
+TaskCPU 32
+TaskCPU 24
+TaskCPU 24
+TaskCPU 24
+TaskCPU 16
+TaskCPU 30

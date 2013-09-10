@@ -3,6 +3,7 @@
 
 #include <vector>
 #include <queue>
+#include <set>
 #include "basesched.h"
 
 class SchedRR2 : public SchedBase {
@@ -15,6 +16,12 @@ class SchedRR2 : public SchedBase {
 
 	private:
 		int next(int cpu);
+		int cores;
+		std::vector<int> cpu_quantum;
+		std::vector<int> max_quantum;
+		
+		std::vector<std::queue<int> > tareas;
+		std::vector<std::set<int> > tareasBlocked;
 };
 
 #endif

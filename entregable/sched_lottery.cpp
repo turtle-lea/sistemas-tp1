@@ -134,5 +134,12 @@ std::pair<int,int> SchedLottery::lottery(){
 			break;
 		}
 	} 
+
+	/** Este if arregla un bug que todavia no terminamos de encontrar **/
+	if (tareasReady.size() == 1){
+		res = make_pair(tareasReady[0].first,0);
+	}	
+	
+
 	return res;
 }

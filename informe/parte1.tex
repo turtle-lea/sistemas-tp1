@@ -11,28 +11,12 @@ Luego implementamos el scheduler \textbf{SchedFCFS}, que utiliza el algoritmo de
 
 A continuación un gráfico del comportamiento del SchedFCFS con uno, dos y tres cores, sin costos de migración o cambio de contexto, para un lote de 3 tareas, dos interactivas TaskConsola y una TaskCPU de procesamiento intensivo.
 
-%\begin{figure}[H]
-%\includegraphics[width=7 cm]{imgs/ej2-1.jpg}%
-%\hspace{2 cm} \includegraphics[width=7 cm]{imgs/ej2-2.jpg}
-%\caption{Un caso de ejemplo y una posible soluci\'on. Las l\'ineas punteadas son rutas no %
-%construidas a\'un.}
-%\end{figure}
-
 \begin{figure}[H]
 \centering\includegraphics[width=18 cm]{graficos/ej2FCFS1.png}
 \centering\includegraphics[width=18 cm]{graficos/ej2FCFS2.png}
 \centering\includegraphics[width=18 cm]{graficos/ej2FCFS3.png}
 \caption{First-Come First-Served, un sólo núcleo de procesamiento en el primer caso, dos en el segundo y por último tres núcleos.}
 \end{figure}
-
-%\begin{figure}[H]
-%\centering\hspace{3 cm}\includegraphics[width=4 cm]{imgs/ej2-3.jpg}\newline
-%\includegraphics[width=5 cm]{imgs/ej2-3a.jpg}\hspace{1 cm}%
-%\includegraphics[width=5 cm]{imgs/ej2-3b.jpg}\hspace{1 cm}%
-%\includegraphics[width=5 cm]{imgs/ej2-3c.jpg}
-%\caption{Las dos primeras son soluciones v\'alidas del problema, y el costo fue de 6. La tercera imagen tiene costo 23, y por lo tanto, aunque es un \'arbol generador, no es una soluci\'on v\'alida porque no es m\'inimo.}
-%\end{figure}
-
 
 Podemos ver en la figura 1 que, si bien este algoritmo evita posibles costosos cambios de contexto y costos de migración, se pierde mucha interactividad. Con un único núcleo la tarea TaskCPU debe esperar a las dos tareas bloqueantes para finalmente correr, cuando podría haber terminado si esta corría mientras las interactivas permanecían bloqueadas.
 

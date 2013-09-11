@@ -1,3 +1,20 @@
 \section{Ecuanimidad del SchedLottery}
 
-En el ejercico 
+En el ejercicio 5 implementamos un scheduler en base al paper ''Lottery scheduling''. Intentamos generar un mecanismo de control eficiente, flexible y justo en donde cada tarea fuese procesada
+aproximadamente un tiempo equivalente a las otras, sin importar su tipo. Este último aspecto es el que nos permite hablar de ecuanimidad del scheduler.
+
+Para ejemplificar lo mencionado anteriormente, supongamos que en una computadora de un solo core se han lanzado dos procesos que corren en simultáneo. El primero de ellos, al cual llamaremos $A$, utiliza
+activamente el CPU sin necesidad de hacer llamados al sistema o esperar que se liberen recursos de la máquina (podría ser, por ejemplo, el caso de una aplicación científica que ejecuta gran cantidad de 
+cuentas). Por otro lado tenemos a la tarea $B$, que ejecuta una instrucción bloqueante cada cierto tiempo, desbloquéandose luego de una cierta cantidad de ticks del reloj. Supongamos también que ambos conviven
+con otros procesos que también están siendo ejecutados por el cpu. En el caso de un scheduler Round Robin, a lo largo de una ronda se le asigna un quantum a cada proceso. Sin embargo, notemos que mientras
+la tarea $A$ utiliza la totalidad del quantum que le han asignado, $B$ usa únicamente una fracción: $\frac{f}{q}$. De esta manera, luego de sucesivas rondas la tarea $A$ ha sido ejecutada un tiempo
+considerablemente mayor al de $B$.
+
+Para solucionar este problema, la idea es que el scheduler seleccione la próxima a ser ejecutada mediante el sorteo de una lotería, en donde aquellas tareas que utilicen solamente una fracción del quantum
+tengan más probabilidades de ser las ganadoras.
+
+
+
+
+
+ 

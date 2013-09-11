@@ -11,7 +11,10 @@ la tarea $A$ utiliza la totalidad del quantum que le han asignado, $B$ usa únic
 considerablemente mayor al de $B$.
 
 Para solucionar este problema, la idea es que el scheduler seleccione la próxima a ser ejecutada mediante el sorteo de una lotería, en donde aquellas tareas que utilicen solamente una fracción del quantum
-tengan más probabilidades de ser las ganadoras.
+tengan más probabilidades de ser las ganadoras. Para lograr este objetivo, utilizamos un sistema de ''compensation tickets'', que funciona de la siguiente manera:
+
+- Las tareas que llegan por primera vez entran con una cantidad equivalente a $\frac{tickets}{1 \ quantum}$. Por ejemplo, si el 
+- Las tareas que utilizaron la totalidad del quantum la último
 
 
 

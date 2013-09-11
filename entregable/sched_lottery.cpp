@@ -5,15 +5,22 @@
 #include <iostream>
 #include <stdlib.h>
 #include <math.h>
+#include <assert.h>
 
 using namespace std;
 
-SchedLottery::SchedLottery(vector<int> argn) { // quantum y semilla
+SchedLottery::SchedLottery(vector<int> argn)
+{ // quantum y semilla
 	// // Round robin recibe la cantidad de cores y sus cpu_quantum por parámetro (MAX_QUANTUM)
+	assert(argn.size() == 3);
+	cores = argn[0];
+	assert(cores >= 0);
+	for(int i=0; i<cores; i++){
+		cpu_quantum.push_back(0);
+	}
 	max_quantum = argn[1];
 	semilla = argn[2];
 	cantTickets = 0;
-	cpu_quantum = 0;
 }
 
 SchedLottery::~SchedLottery() {
@@ -22,8 +29,8 @@ SchedLottery::~SchedLottery() {
 
 
 void SchedLottery::load(int pid) {
-	tareasReady.push_back(make_pair(pid,1));
-	cantTickets++;
+	tareasReady.push_back(make_pair(pid,max_quantum));
+	cantTickets+=max_quantum;
 }
 
 void SchedLottery::unblock(int pid) {
@@ -61,7 +68,7 @@ int SchedLottery::tick(int cpu,const enum Motivo m) {
 	double frac;
 	
 	if(m == EXIT){
-		cpu_quantum = 0;
+		cpu_quantum[cpu] = 0;
 		if(!tareasReady.empty()){
 			res = lottery(); // (pid,i)
 			proximo = res.first; indice = res.second;
@@ -75,18 +82,18 @@ int SchedLottery::tick(int cpu,const enum Motivo m) {
 	if(m == TICK){
 		if(actual == IDLE_TASK){
 			if(!tareasReady.empty()){
-				cpu_quantum = 0;
+				cpu_quantum[cpu] = 0;
 				res = lottery(); // (pid,i)
 				proximo = res.first; indice = res.second;
 				cantTickets-=tareasReady[indice].second;
 				tareasReady.erase(tareasReady.begin()+indice); //no utilizamos el valor de retorno
 			}
 		}else{
-			cpu_quantum++;	
-			if(cpu_quantum >= max_quantum){
+			cpu_quantum[cpu]++;	
+			if(cpu_quantum[cpu] >= max_quantum){
 				tareasReady.push_back(make_pair(proximo,1));
 				cantTickets++;
-				cpu_quantum = 0;
+				cpu_quantum[cpu] = 0;
 				res = lottery(); // (pid,i)
 				proximo = res.first; indice = res.second;
 				cantTickets-=tareasReady[indice].second;
@@ -96,13 +103,13 @@ int SchedLottery::tick(int cpu,const enum Motivo m) {
 	}
 	
 	if(m == BLOCK) {
-		cpu_quantum++;
-		frac = (double)max_quantum/(double)cpu_quantum;
+		cpu_quantum[cpu]++;
+		frac = (double)max_quantum/(double)cpu_quantum[cpu];
 		frac = ceil(frac);
 		tareasBlocked.push_back(make_pair(actual,(int)frac));
 					
 		if(!tareasReady.empty()){
-			cpu_quantum = 0;
+			cpu_quantum[cpu] = 0;
 			res = lottery(); // (pid,i)
 			proximo = res.first; indice = res.second;
 			cantTickets-=tareasReady[indice].second;
@@ -127,6 +134,5 @@ std::pair<int,int> SchedLottery::lottery(){
 			break;
 		}
 	} 
-	std::cout << "Cant tickets: " << cantTickets << std::endl;
 	return res;
 }

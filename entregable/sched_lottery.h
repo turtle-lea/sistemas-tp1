@@ -20,9 +20,12 @@ class SchedLottery : public SchedBase {
 		void searchDestroyReady(int);
 		int searchDestroyBlocked(int);
 		std::pair<int,int> lottery();
-		int cantTickets;
-		int cpu_quantum;
+
+		int cores;
+		std::vector<int> cpu_quantum;
 		int max_quantum;
+		
+		int cantTickets;
 		double semilla;
 		std::vector< std::pair<int,int> > tareasReady; //<pid,cantTickets> 
 		std::vector< std::pair<int,int> > tareasBlocked; //<pid,cantTickets> 

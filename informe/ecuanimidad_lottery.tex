@@ -1,23 +1,25 @@
-\subsubsection{Ecuanimidad del SchedLottery}
+\subsubsection{Ecuanimidad SchedLottery con compensation tickets}
 
-En el ejercicio 5 implementamos un scheduler en base al paper ''Lottery scheduling''. Intentamos generar un mecanismo de control eficiente, flexible y justo en donde cada tarea fuese procesada
-aproximadamente un tiempo equivalente a las otras, sin importar su tipo. Este último aspecto es el que nos permite hablar de ecuanimidad del scheduler.
+SchedLottery fue testeado exhaustivamente y al utilizar el sistema de compensation tickets se comporta de forma esperada. Entre toda la experimentación
+decidimos quedarnos con un par de muestras que exhiben aspectos relevantes de su comportamiento.
 
-Para ejemplificar lo mencionado anteriormente, supongamos que en una computadora de un solo core se han lanzado dos procesos que corren en simultáneo. El primero de ellos, al cual llamaremos $A$, utiliza
-activamente el CPU sin necesidad de hacer llamados al sistema o esperar que se liberen recursos de la máquina (podría ser, por ejemplo, el caso de una aplicación científica que ejecuta gran cantidad de 
-cuentas). Por otro lado tenemos a la tarea $B$, que ejecuta una instrucción bloqueante cada cierto tiempo, desbloquéandose luego de una cierta cantidad de ticks del reloj. Supongamos también que ambos conviven
-con otros procesos que también están siendo ejecutados por el cpu. En el caso de un scheduler Round Robin, a lo largo de una ronda se le asigna un quantum a cada proceso. Sin embargo, notemos que mientras
-la tarea $A$ utiliza la totalidad del quantum que le han asignado, $B$ usa únicamente una fracción: $\frac{f}{q}$. De esta manera, luego de sucesivas rondas la tarea $A$ ha sido ejecutada un tiempo
-considerablemente mayor al de $B$.
+La siguiente figura muestra un experimento corrido sobre un scheduler con lote de 5 tareas, en donde 1 es bloqueante y las otras consumen constantemente CPU. 
+El quantum del mismo es de 4 ticks, por lo que luego de las primeras corridas de cada una tendríamos: 
 
-Para solucionar este problema, la idea es que el scheduler seleccione la próxima a ser ejecutada mediante el sorteo de una lotería, en donde aquellas tareas que utilicen solamente una fracción del quantum
-tengan más probabilidades de ser las ganadoras. Para lograr este objetivo, utilizamos un sistema de ''compensation tickets'', que funciona de la siguiente manera:
+tarea bloqueante: 4 tickets. Resto de las tareas: 1 ticket. Cantidad de tickets totales en circulación: 8. 
 
-- Las tareas que llegan por primera vez entran con una cantidad equivalente a $\frac{tickets}{1 \ quantum}$. Por ejemplo, si el 
-- Las tareas que utilizaron la totalidad del quantum la último
+Por lo tanto, lo esperable es que cada 8 sorteos en donde participen las 5 tareas (tengamos en cuenta que cuando una tarea se bloquea una cantidad de clocks $\neq \ 0$ no 
+participa en el próximo sorteo), 4 sean ganadas por la tarea bloqueante, y el resto de las tareas gane una única vez.
 
+\begin{figure}[!h]
+	\begin{center}
+		  \includegraphics[scale=0.5]{Graficos/intervalo_8.png}
+		  \caption{Comportamiento de SchedLottery para 5 tareas: 1 bloqueantes y 4 tareas CPU }
+		  \label{fig:contra1}
+	\end{center}
+\end{figure}
+\FloatBarrier
 
-
-
-
- 
+Efectivamente, utilizamos esta figura para mostrar que nuestras hipótesis se confirmaron (el mismo experimento fue corrido repetidas veces arrojando resultados similares).
+Si consideramos los sorteos en donde participan las 5 tareas, en el intervalo de tiempo encerrado por el rectángulo azul, observamos como la tarea bloqueante sale
+ganadora en 4 de las 8 ocasiones. La tarea 2 gana en 2 ocasiones. La tarea 4 y la 1 ganan en una ocasión (lo esperable), mientras que la tarea 3 no sale sorteada ninguna vez.

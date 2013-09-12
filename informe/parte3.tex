@@ -1,0 +1,21 @@
+Para experimentar con los distintos algoritmos de scheduling planteados a lo largo del trabajo confeccionamos una nueva tarea 
+\textbf{TaskBatch} y un "nuevo" scheduler \textbf{SchedRR2}, el cual se basa también en el algoritmo $round-robin$ pero no permite migración entre núcleos.
+
+TaskBatch es una tarea que toma dos parámetros, $total_cpu$ y $cant_bloqueos$. Su función es bloquearse tantas veces como $cant_bloqueos$ en momentos pseudoaleatorios, pero sin excederse jamas de $total_cpu$ tiempo corriendo en el CPU. Es decir, la tarea correrá siempre un tiempo constante en el CPU, pero su tiempo total de ejecución dependerá de cuanto tiempo se bloquee y cuanto tiempo esperé en estado $ready$ para correr.
+
+Básicamente su implementación se resume en un ciclo. Por cada iteración se genera un número pseudoaleatorio en un rango razonable, el cual se compara con ciertos parámetros para determinar, con cierta probabilidad, si se bloquea o no en ese momento. Si se bloquea, disminuimos la cantidad de bloqueos restantes. En otro caso, diminuimos el tiempo que nos queda restante (en el cual se toma en cuenta el tiempo consumido por las llamadas bloqueantes y el exit). Si vemos que el tiempo corre y faltan llamadas bloqueantes, ellas se daran al hilo al final. De otro modo, si resulta que ya se ha bloquedo las veces que queriamos, usaremos el CPU el tiempo restante.
+
+Esa constancia en tiempo $running$ nos permite experimentar con más tranquilidad.
+
+~
+
+Luego nos planteamos determinar cual es el valor óptimo de quantum para ciertos schedulers, en particular experimentamos en el ejercicio 7 con el SchedRR, con costo de cambio de contexto de un ciclo y dos ciclos de costo de migración. Para ello planteamos dos diferentes métricas: TurnAround time y Waiting time.
+
+\subsection{TurnAround time}
+
+Aquí queremos ver como afecta el quantum que el scheduler determina para cada CPU en el tiempo de ejecución de cada tarea. Planteamos la siguiente ecuación:
+\centering $\frac{\#ciclosDeEjecucion}{quantum} * (quantum + costoContexto + constoMigracion) = tiempoDeEjec$
+
+
+
+\subsection{Waiting time}

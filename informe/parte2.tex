@@ -10,17 +10,19 @@ Así como el SchedFCFS, éste scheduler esta implementado sobre una cola de tare
 
 Para determinar si una tarea cumplió con el quantum máximo del CPU en la cual corre tenemos un vector de quantums parciales, un contador para cada CPU. Por cada tick se incrementa en uno y se resetea en caso de que la tarea sea desalojada. Notar que si la tarea se bloquea es desalojada y por lo tanto pierde su quantum.
 
-Como detalle de implementación determinamos que si existe una única tarea y ésta se bloquea seguirá corriendo en el CPU para evitar pagar costos de cambio de contexto.
+Como detalle de implementación determinamos que si alguna tarea se bloquea y no hay ninguna tarea lista para correr, es decir, la cola de tareas $ready$ esta vacia, ésta seguirá corriendo en el CPU para evitar pagar costos de cambio de contexto.
 
 Veamos el gráfico a continuación:
 
 \begin{figure}[H]
-\centering\includegraphics[width=18 cm]{graficos/ej4RR1.png}
-\centering\includegraphics[width=18 cm]{graficos/ej4RR2.png}
-\caption{First-Come First-Served, un sólo núcleo de procesamiento en el primer caso, dos en el segundo y por último tres núcleos.}
+\centering\includegraphics[width=15 cm]{graficos/ej4RR1.png}
+\centering\includegraphics[width=15 cm]{graficos/ej4RR2.png}
+\caption{Round-robin, un sólo núcleo de procesamiento en el primer caso, 4 en el segundo. Distintos lotes de tareas.}
 \end{figure}
 
+Se confeccionaron dos lotes diferentes para la figura 2. Para el primer caso se corrieron dos TaskCPU, una TaskConsola y dos TaskAlterno (alternan entre uso de CPU y llamadas bloqueantes). Como el primer gráfico muestra el comportamiento con un único núcleo es facil ver como SchedRR funciona. En orden de llegada cada tarea corre su quantum, o lo pierde si se bloquea para que otra tome su lugar.
 
+El segundo caso refleja el mismo funcionamiento pero quad-core, con iguales quantums máximos para cada CPU. En este caso el lote estaba compuesto por seis TaskCPU y sólo una TaskConsola. Como en el ejemplo no hay costos de migración, algunas tareas terminan el quantum de un núcleo y automáticamente corren en otro, pero es de esperarse. La TaskConsola se bloquea y libera el CPU para otras tareas.
 
 \subsection{SchedLottery y compensaciones probabilísticas}
 

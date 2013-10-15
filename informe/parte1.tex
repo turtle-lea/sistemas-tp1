@@ -1,7 +1,10 @@
 Para la primera parte implementamos la tarea \textbf{TaskConsola}, la cual simula ser una tarea interactiva.
 
-TaskConsola recibe tres parámetros: $n$, $bmin$ y $bmax$; y debe realizar $n$ llamadas bloqueantes, cada una con un tiempo pseudoaleatorio
-entre $bmin$ y $bmax$. Con el fin de generar este tiempo debimos generar un número pseudoaleatorio $random\_number$, para lo cual utilizamos las funciones rand() y srand() definidas en la stdlib. El número es generado por rand() bajo una semilla generada por srand() en función del horario en el cual corre la tarea ($\#include <sys/time.h>$). Luego, el tiempo $t$ para la i-ésima llamada bloqueante es dado por la siguiente operación: $t = bmin + (random\_number \% (bmax-bmin+1))$, para que el número pertenezca al intervalo deseado.
+TaskConsola recibe tres parámetros: $n$, $bmin$ y $bmax$; y debe realizar $n$ llamadas bloqueantes, cada una con un tiempo pseudoaleatorio entre $bmin$ y $bmax$. 
+
+Con el fin de generar este tiempo debimos generar un número pseudoaleatorio $random\_number$, para lo cual utilizamos las funciones rand() y srand() definidas en la stdlib. El número es generado por rand() dentro del rango [0..RAND\_MAX] bajo una semilla generada por srand() en función del horario en el cual corre la tarea ($\#include <sys/time.h>$). Vale aclarar que $RAND\_MAX$ asumimos menor o igual a 32767, el valor estándar. Es una constante definida en <cstdlib>.
+
+Luego, el tiempo $t$ para la i-ésima llamada bloqueante es dado por la siguiente operación: $t = bmin + (random\_number \% (bmax-bmin+1))$, para que el número pertenezca al intervalo deseado.
 
 ~
 

@@ -55,7 +55,10 @@ cantidad de cores" no hay justificacion sobre el comportamiento de fcfs
 Ejercicio 5 y 6 explicación de implementación
 No explican la implementacion ni la idea del algorítmo de lottery,
 
-/**   */
+/** SEING
+	* creo que por error esta sched_lottery.tex no se incluyo y no lo mandamos a correccion siquiera.
+	* hay que revisarlo con cuidado porque no tiene primera correccion. que paja.
+*/
 
 taskbatch esta bien.
 //~ Superb.

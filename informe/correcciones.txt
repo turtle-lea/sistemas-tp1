@@ -28,7 +28,7 @@ sobre la implementacion.
 Sobre la seudoaleatoriedad no comentan en que rango se mueve
 random_number."
 /** SEING 
-	* esto es una gilada, MAN rand... 
+	* esto es una gilada, MAN rand... ya lo cambie. Solved.
 */
 
  "pocas corridas, no dan informacion

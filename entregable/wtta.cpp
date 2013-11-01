@@ -51,17 +51,15 @@ int main()
 				cin >> y;
 				if (y==-1) break;
 				cin.clear();
-				cin.ignore(1024, '\n');				
+				cin.ignore(1024, '\n');			
 				sumar[y]=0;
-				if (ultVez[y] != x+1) bloques[y]++;
+			//	if (ultVez[y] != x+1) bloques[y]++;
 				for (int j=0;j<cantProcesos;++j){
-					if (j!=y){
-						sumar[j]=1;
-					}
-				}
-				for (int j=0;j<cantProcesos;++j){
+					if (j!=y && sumar[j]==0) bloques[j]++;
+					if (j!=y) sumar[j]=1;
 					if (sumar[j]==1) procesos[j]++;
 				}
+				
 				cin >> palabra;
 				if (palabra != "CPU") break;
 				//cout << palabra<<endl;

@@ -2,11 +2,22 @@ Para la primera parte implementamos la tarea \textbf{TaskConsola}, la cual simul
 
 TaskConsola recibe tres parámetros: $n$, $bmin$ y $bmax$; y debe realizar $n$ llamadas bloqueantes, cada una con un tiempo pseudoaleatorio entre $bmin$ y $bmax$. 
 
-Con el fin de generar este tiempo debimos generar un número pseudoaleatorio $random\_number$, para lo cual utilizamos las funciones rand() y srand() definidas en la stdlib. El número es generado por rand() dentro del rango [0..RAND\_MAX] bajo una semilla generada por srand() en función del horario en el cual corre la tarea ($\#include <sys/time.h>$). Vale aclarar que $RAND\_MAX$ asumimos menor o igual a 32767, el valor estándar. Es una constante definida en <cstdlib>.
+Con el fin de generar este tiempo debimos generar un número pseudoaleatorio $random\_number$, para lo cual utilizamos las funciones rand() y srand($seed$) definidas en la stdlib. El número es generado por rand() dentro del rango [0..RAND\_MAX] bajo una semilla introducida por srand($seed$) donde $seed$ la calculamos en función del horario en el cual corre la tarea ($\#include <sys/time.h>$). Vale aclarar que $RAND\_MAX$ asumimos menor o igual a 32767, el valor estándar. Es una constante definida en <cstdlib>.
 
-Luego, el tiempo $t$ para la i-ésima llamada bloqueante es dado por la siguiente operación: $t = bmin + (random\_number \% (bmax-bmin+1))$, para que el número pertenezca al intervalo deseado.
+Luego, el tiempo $t$ para la i-ésima llamada bloqueante es dado por la siguiente operación:
 
-~
+\begin{center}
+	$t = bmin + (random\_number \ \% \ (bmax-bmin+1))$
+\end{center}
+
+%{\centering
+%	$t = bmin + (random\_number \ \% \ (bmax-bmin+1))$
+%
+%}
+
+De ese modo el tiempo $t$ se encuentra efectivamente dentro del intervalo deseado (entre $bmin$ y $bmax$ inclusive).
+
+\subsection{SchedFCFS}
 
 Luego implementamos el scheduler \textbf{SchedFCFS}, que utiliza el algoritmo de First-Come First-Served. Dicho de otro modo, las tareas se ejecutan por órden de llegada y hasta que finalice su ejecución. Implementamos el SchedFCFS sobre una cola de tareas en estado $ready$, donde la función LOAD se resume en simplemente encolar el pid de la tarea a cargar; la función UNBLOCK no tiene uso dado que aún si la tarea se bloquea, esta corre en el cpu hasta que finalice su espera; y la función TICK simplemente cambia de tarea cuando se la llama con motivo de exit y la tarea que corría en el cpu termina.
 

@@ -22,7 +22,6 @@ int main()
 	cin.clear();
     cin.ignore (10000, '\n' );
   	cin >> palabra;
-  	cout <<palabra;
 	vector<int> ultVez;
 	
 	while (palabra == "LOAD"){
@@ -35,13 +34,15 @@ int main()
 	}
 	
 	vector<int> loads (cantProcesos);
-	vector<int> procesos (cantProcesos);
-	vector<int> bloques (cantProcesos);
+	vector<double> procesos (cantProcesos);
+	vector<double> bloques (cantProcesos);
 	vector<bool> sumar (cantProcesos);
 	
 	loads = ultVez;
 	
-	while (exits != cantProcesos){
+	int anterior;
+	
+	while (true){
 		//cout<<"entre"<<endl;
 		//cin >> palabra;
 		if (palabra == "CPU"){
@@ -63,7 +64,7 @@ int main()
 				}
 				cin >> palabra;
 				if (palabra != "CPU") break;
-				cout << palabra<<endl;
+				//cout << palabra<<endl;
 			}
 		}
 		if (palabra == "BLOCK"){
@@ -72,37 +73,41 @@ int main()
 			cin.ignore(1024,'\n');
 			sumar[y]=0;
 			cin >> palabra;
-			cout << palabra<<endl;
+			//cout << palabra<<endl;
 		}
 		if (palabra == "UNBLOCK"){
 			cin >> aux;
 			cin >> y;
 			sumar[y]=1;
 			cin >> palabra;
-			cout << palabra<<endl;
+			//cout << palabra<<endl;
 		}
 		if (palabra == "EXIT"){
-			cout << "entre en exit"<<endl;
+			//cout << "entre en exit"<<endl;
 			cin >> x;
 			cin >> y;
 			cin.clear();
 			cin.ignore(1024,'\n');
 			loads[y] = x-loads[y];
 			exits++;
-			cout <<"Proceso: "<< y << " exits: "<<exits<<endl;			
+			if (exits==cantProcesos) break;
+			//cout <<"Proceso: "<< y << " exits: "<<exits<<endl;			
 			cin >> palabra;
-			cout << palabra<<endl;
+			//cout << palabra<<endl;
 		}
 		else{
 			cin.clear();
 			cin.ignore(10000,'\n');
 			cin >> palabra;
-			cout << palabra<<endl;
+			//cout << palabra<<endl;
 		}
 	}
-	int wt=0;
-	int ta=0;	
+	double wt=0;
+	double ta=0;	
 	for (int i=0;i<cantProcesos;++i){
+		cout << "Procesos:" << procesos[i] <<endl;
+		cout << "Bloques:" <<bloques[i] <<endl;
+		//cout << procesos[i]/bloques[i]<<endl;
 		wt+=procesos[i]/bloques[i];
 		ta+=loads[i];
 	}

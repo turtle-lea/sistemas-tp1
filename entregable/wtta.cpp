@@ -74,12 +74,12 @@ int main()
 					}
 				}
 				sumar[y]=0;
-				cout<<"Ticks:";
+				/*cout<<"Ticks:";
 				cout<<bloques[0];
-				cout<<" CPU:"<<x<<endl;							
+				cout<<" CPU:"<<x<<endl;*/							
 				ultVez[y]=x;
 				cin >> palabra;
-	/*			if (palabra == "CPU"){
+	  /*			if (palabra == "CPU"){
 					pos = cin.tellg();
 					cin >> proximoX;
 					if (x!=proximoX){
@@ -134,12 +134,14 @@ int main()
 		}
 	}
 	double wt=0;
-	double ta=0;	
+	double ta=0;
+	double ticks;	
 	for (int i=0;i<cantProcesos;++i){
-		cout << "Proceso: " << i << " ";
+		/*cout << "Proceso: " << i << " ";
 		cout << "Ticks:" << loads[i]-procesos[i] <<" ";
-		cout << "Bloques:" <<bloques[i] <<endl;
-		wt+=procesos[i]/bloques[i];
+		cout << "Bloques:" <<bloques[i] <<endl;*/
+		ticks=loads[i]-procesos[i];
+		wt+=ticks/bloques[i];
 		ta+=loads[i];
 	}
 	wt/=cantProcesos;

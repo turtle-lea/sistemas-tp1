@@ -1,5 +1,9 @@
 #include <iostream>
 #include <vector>
+#include <cassert>
+#include <stdio.h>
+#include <fstream>
+
 using namespace std;
 
 int main()
@@ -40,48 +44,50 @@ int main()
 	
 	loads = ultVez;
 	
-	int anterior;
+	int proximoX;
+	int pos;
 	
 	while (true){
-		//cout<<"entre"<<endl;
-		//cin >> palabra;
 		if (palabra == "CPU"){
-			for (int i=0;i<cores;i++){
-				cin >> x;
-				cin >> y;
-				if (y==-1) break;
+			cin >> x;
+			cin >> y;
+			if (y!=-1){
 				cin.clear();
 				cin.ignore(1024, '\n');			
 				sumar[y]=0;
-			//	if (ultVez[y] != x+1) bloques[y]++;
-				for (int j=0;j<cantProcesos;++j){
-					if (j!=y && sumar[j]==0) bloques[j]++;
-					if (j!=y) sumar[j]=1;
-					if (sumar[j]==1) procesos[j]++;
-				}
-				
 				cin >> palabra;
-				if (palabra != "CPU") break;
-				//cout << palabra<<endl;
+				if (palabra == "CPU"){
+					pos = cin.tellg();
+					cin >> proximoX;
+					if (x!=proximoX){
+						for (int j=0;j<cantProcesos;++j){
+							if (j!=y && sumar[j]==0) bloques[j]++;
+							if (j!=y) sumar[j]=1;
+							if (sumar[j]==1) procesos[j]++;
+						}
+					}
+					cin.seekg(pos);
+				}
+			}
+			else{
+				cin.clear();
+				cin.ignore(1024, '\n');							
 			}
 		}
-		if (palabra == "BLOCK"){
+		else if (palabra == "BLOCK"){
 			cin >> y;
 			cin.clear();
 			cin.ignore(1024,'\n');
 			sumar[y]=0;
 			cin >> palabra;
-			//cout << palabra<<endl;
 		}
-		if (palabra == "UNBLOCK"){
+		else if (palabra == "UNBLOCK"){
 			cin >> aux;
 			cin >> y;
 			sumar[y]=1;
 			cin >> palabra;
-			//cout << palabra<<endl;
 		}
-		if (palabra == "EXIT"){
-			//cout << "entre en exit"<<endl;
+		else if (palabra == "EXIT"){
 			cin >> x;
 			cin >> y;
 			cin.clear();
@@ -89,9 +95,7 @@ int main()
 			loads[y] = x-loads[y];
 			exits++;
 			if (exits==cantProcesos) break;
-			//cout <<"Proceso: "<< y << " exits: "<<exits<<endl;			
 			cin >> palabra;
-			//cout << palabra<<endl;
 		}
 		else{
 			cin.clear();
@@ -105,7 +109,6 @@ int main()
 	for (int i=0;i<cantProcesos;++i){
 		cout << "Procesos:" << procesos[i] <<endl;
 		cout << "Bloques:" <<bloques[i] <<endl;
-		//cout << procesos[i]/bloques[i]<<endl;
 		wt+=procesos[i]/bloques[i];
 		ta+=loads[i];
 	}

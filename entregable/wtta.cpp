@@ -41,11 +41,18 @@ int main()
 	vector<double> procesos (cantProcesos);
 	vector<double> bloques (cantProcesos);
 	vector<bool> sumar (cantProcesos);
+	vector<bool> unblocks (cantProcesos);
+	
+	for (int i=0;i<cantProcesos;++i){
+		if (loads[i] == 0) sumar[i]=1;
+	}
 	
 	loads = ultVez;
 	
 	int proximoX;
 	int pos;
+	int aux1;
+	int aux2;
 	
 	while (true){
 		if (palabra == "CPU"){
@@ -53,38 +60,58 @@ int main()
 			cin >> y;
 			if (y!=-1){
 				cin.clear();
-				cin.ignore(1024, '\n');			
+				cin.ignore(1024, '\n');
+				procesos[y]++;
+				if (!sumar[y] && unblocks[y] && ultVez[y]!=x-1 && ultVez[y]!=x){
+					unblocks[y]=0;
+					bloques[y]++;
+					sumar[y]=1;					
+				}			
+				for (int j=0;j<cantProcesos;++j){
+					if (!sumar[j] && ultVez[j]!=x-1 && ultVez[j]!=x){
+						bloques[j]++;
+						sumar[j]=1;
+					}
+				}
 				sumar[y]=0;
+				cout<<"Ticks:";
+				cout<<bloques[0];
+				cout<<" CPU:"<<x<<endl;							
+				ultVez[y]=x;
 				cin >> palabra;
-				if (palabra == "CPU"){
+	/*			if (palabra == "CPU"){
 					pos = cin.tellg();
 					cin >> proximoX;
 					if (x!=proximoX){
 						for (int j=0;j<cantProcesos;++j){
-							if (j!=y && sumar[j]==0) bloques[j]++;
-							if (j!=y) sumar[j]=1;
+							//if (j!=y) sumar[j]=1;
 							if (sumar[j]==1) procesos[j]++;
 						}
 					}
 					cin.seekg(pos);
-				}
+				}*/
 			}
 			else{
 				cin.clear();
-				cin.ignore(1024, '\n');							
+				cin.ignore(1024, '\n');	
+				cin >> palabra;						
 			}
 		}
 		else if (palabra == "BLOCK"){
+			cin >> aux1;
 			cin >> y;
+			ultVez[y]=aux1;
+			sumar[y]=0;
 			cin.clear();
 			cin.ignore(1024,'\n');
-			sumar[y]=0;
 			cin >> palabra;
 		}
 		else if (palabra == "UNBLOCK"){
-			cin >> aux;
+			cin >> aux2;
 			cin >> y;
-			sumar[y]=1;
+			unblocks[y]=1;
+			procesos[y]+=aux2-ultVez[y];
+			ultVez[y]=aux2;
 			cin >> palabra;
 		}
 		else if (palabra == "EXIT"){
@@ -94,20 +121,23 @@ int main()
 			cin.ignore(1024,'\n');
 			loads[y] = x-loads[y];
 			exits++;
-			if (exits==cantProcesos) break;
+			if (exits==cantProcesos){
+				bloques[y]++;
+				break;
+			}
 			cin >> palabra;
 		}
-		else{
+		else if (palabra == "#"){
 			cin.clear();
 			cin.ignore(10000,'\n');
 			cin >> palabra;
-			//cout << palabra<<endl;
 		}
 	}
 	double wt=0;
 	double ta=0;	
 	for (int i=0;i<cantProcesos;++i){
-		cout << "Procesos:" << procesos[i] <<endl;
+		cout << "Proceso: " << i << " ";
+		cout << "Ticks:" << loads[i]-procesos[i] <<" ";
 		cout << "Bloques:" <<bloques[i] <<endl;
 		wt+=procesos[i]/bloques[i];
 		ta+=loads[i];

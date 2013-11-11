@@ -152,7 +152,7 @@ int main()
 		cout << "Bloques:" <<bloques[i] <<endl;*/
 		ticks=loads[i]-procesos[i];
 		wt+=ticks/bloques[i];
-		cout<<"wt:"<<ticks/bloques[i]<<endl;
+		//cout<<"wt:"<<ticks/bloques[i]<<endl;
 		//cout<<"pt:"<<procesos[i]<<endl;
 		ta+=loads[i];
 	}

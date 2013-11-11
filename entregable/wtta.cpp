@@ -53,15 +53,24 @@ int main()
 	int pos;
 	int aux1;
 	int aux2;
+	int xAnt;
+	int yAnt;
 	
 	while (true){
 		if (palabra == "CPU"){
 			cin >> x;
 			cin >> y;
-			if (y!=-1){
+			if (x==xAnt && y==yAnt){
+				cin.clear();
+				cin.ignore(1024, '\n');
+				cin >> palabra;
+			}
+			//if (y==0) cout << "CPU" << x << " " << procesos[0] <<endl;
+			else if (y!=-1){
 				cin.clear();
 				cin.ignore(1024, '\n');
 				procesos[y]++;
+				if (unblocks[y]==1) unblocks[y]=0;
 				if (!sumar[y] && unblocks[y] && ultVez[y]!=x-1 && ultVez[y]!=x){
 					unblocks[y]=0;
 					bloques[y]++;
@@ -96,6 +105,7 @@ int main()
 				cin.ignore(1024, '\n');	
 				cin >> palabra;						
 			}
+			xAnt=x; yAnt=y;
 		}
 		else if (palabra == "BLOCK"){
 			cin >> aux1;
@@ -142,6 +152,8 @@ int main()
 		cout << "Bloques:" <<bloques[i] <<endl;*/
 		ticks=loads[i]-procesos[i];
 		wt+=ticks/bloques[i];
+		cout<<"wt:"<<ticks/bloques[i]<<endl;
+		//cout<<"pt:"<<procesos[i]<<endl;
 		ta+=loads[i];
 	}
 	wt/=cantProcesos;

@@ -1,4 +1,5 @@
 *.o
 simusched
 *.log
-*~
+*.tex~
+*.txt~

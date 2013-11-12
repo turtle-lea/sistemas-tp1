@@ -88,3 +88,8 @@ Ejercicio 10 "Evalua correctamente la optimizacion
 Del optimization ticket?"
 Es pobre, faltan experimentos, variaciones, etc. No hay buenas
 concluciones sobre por que esta bueno este scheduler
+
+
+TO RIFLE: PROMEDIO/MEDIA VARIANZA DESVIO ESTANDAR (barras de error: +-desvio estandar)
+
+ps -ef | wc -l para saber cuantos procesos hay

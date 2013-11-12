@@ -8,7 +8,7 @@
 class SchedLottery : public SchedBase {
 	public:
 		SchedLottery(std::vector<int> argn);
-        ~SchedLottery();
+        	~SchedLottery();
 		virtual void load(int pid);
 		virtual void unblock(int pid);
 		virtual int tick(int cpu,const enum Motivo m);
@@ -26,7 +26,7 @@ class SchedLottery : public SchedBase {
 		int max_quantum;
 		
 		int cantTickets;
-		double semilla;
+		unsigned int semilla;
 		std::vector< std::pair<int,int> > tareasReady; //<pid,cantTickets> 
 		std::vector< std::pair<int,int> > tareasBlocked; //<pid,cantTickets> 
 };

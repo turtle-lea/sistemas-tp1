@@ -37,9 +37,9 @@ for k in range(2,int(cores)+1):
 		
 		for s in range (0,20):
 			if (sched=="SchedLottery"):
-				os.system("./simusched "+lote+" "+cores+" 1 2 "+sched+" "+j+" "+j+" > test")
+				os.system("./simusched "+lote+" "+str(k)+" 1 2 "+sched+" "+j+" "+j+" > test")
 			if (sched=="SchedRR" or sched=="SchedRR2"):
-				string = "./simusched "+lote+" "+cores+" 1 2 "+sched+" "
+				string = "./simusched "+lote+" "+str(k)+" 1 2 "+sched+" "
 				for h in range(0,k):
 					string = string+j+" "
 				string = string+"> test"		
@@ -86,9 +86,8 @@ for k in range(2,int(cores)+1):
 		#nombre_test = "test_"+j
 		#os.system("mv test.png experimento/"+nombre_test+".png")
 		#os.system("mv test experimento/"+nombre_test+".out")
-		os.system("rm test")
+		#os.system("rm test")
 		
-	os.system("rm tmp")
 	fo.write("\n")
 	fo.write("Quantum con menor waiting time: "+str(quantum2)+"("+str(wtMin)+")\n")
 	fo.write("Quantum con menor turnaround time: "+str(quantum1)+"("+str(taMin)+")")
@@ -96,14 +95,14 @@ for k in range(2,int(cores)+1):
 
 	#Graficador
 
-	plt.figure(1)
+	plt.figure(k)
 	plt.xlabel("Quantum")
 	plt.ylabel("Waiting time")
 	plt.errorbar(x, ywt, yerr=desviosWt, fmt='.', color='black')
 	plt.axis([0,qm,0,max(ywt)+2])
 	savefig("experimento/cores_"+str(k)+"_wt.jpg")
 
-	plt.figure(2)
+	plt.figure(k+1)
 	plt.xlabel("Quantum")
 	plt.ylabel("Turnaround time")
 	plt.errorbar(x, yta, yerr=desviosTa, fmt='.', color='black')
@@ -118,4 +117,6 @@ for k in range(2,int(cores)+1):
 	desviosWt=[]
 	desviosTa=[]
 	
+os.system("rm tmp")
+os.system("rm test")	
 os.system("mv wtta.out experimento/")

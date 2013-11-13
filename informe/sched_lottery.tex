@@ -1,0 +1,38 @@
+
+En el ejercicio 5 implementamos un scheduler en base al paper ''Lottery scheduling''. Intentamos generar un mecanismo de control eficiente, flexible y justo en donde cada tarea fuese procesada
+aproximadamente un tiempo equivalente a las otras, sin importar su tipo. Este último aspecto es el que nos permite hablar de ecuanimidad del scheduler.
+
+Para ejemplificar lo mencionado anteriormente, supongamos que en una computadora de un solo core se han lanzado dos procesos que corren en simultáneo. El primero de ellos, al cual llamaremos $A$, utiliza
+activamente el CPU sin necesidad de hacer llamados al sistema o esperar que se liberen recursos de la máquina (podría ser, por ejemplo, el caso de una aplicación científica que ejecuta gran cantidad de 
+cuentas). Por otro lado tenemos a la tarea $B$, que ejecuta una instrucción bloqueante cada cierto tiempo, desbloquéandose luego de una cierta cantidad de ticks del reloj. Supongamos también que ambos conviven
+con otros procesos que también están siendo ejecutados por el cpu. En el caso de un scheduler Round Robin, a lo largo de una ronda se le asigna un quantum a cada proceso. Sin embargo, notemos que mientras
+la tarea $A$ utiliza la totalidad del quantum que le han asignado, $B$ usa únicamente una fracción: $\frac{f}{q}$. De esta manera, luego de sucesivas rondas la tarea $A$ ha sido ejecutada un tiempo
+considerablemente mayor al de $B$.
+
+Para solucionar este problema, la idea es que el scheduler seleccione la próxima a ser ejecutada mediante el sorteo de una lotería, en donde aquellas tareas que utilicen solamente una fracción del quantum
+tengan más probabilidades de ser las ganadoras. Para lograr este objetivo, utilizamos un sistema de ''compensation tickets'', que funciona de la siguiente manera:
+
+- Las tareas que llegan por primera vez entran con una cantidad equivalente a $\frac{\#tickss}{quantum}$. Por ejemplo, si cada quantum consta de 8 ticks, entonces cada
+proceso recibirá 8 tickets iniciales, con lo cual evitamos que las tareas recién ingresadas sufran de inanición (se les dé la oportunidad de correr para conocer su tipo, 
+y comepensarlos (o no) con la cantidad de tickets correspondiente).
+
+- Cuando una tarea es desalojada debido a una llamada bloqueante, lo más probable es que solamente haya utilizado una fracción del quantum. Sea esta última $\frac{f}{q}$,
+en donde q es igual a $\frac{\#tickss}{quantum}$ y f la cantidad de ticks consumidos por la tarea durante el último llamado.
+Anteriormente habíamos dicho que el scheduler debía encargarse de que todas las tareas corrieran una cantidad de tiempo lo más similar posible a las demás, y que para ello utilizaba
+el sistema de compensation tickets. Nuestro mecanismo hace que la tarea ingrese a la cola de Ready's con $\frac{q}{f}$ tickets, con lo cual tiene una probabilidad de ganar
+inversamente proporcional a la fracción de quantum que está usando.
+
+- Cuando se produce un tick y el scheduler detecta que la tarea consumió la totalidad de su quantum, la misma es desalojada y encolada en el vector de Ready's con un solo ticket.
+
+~
+Poniendo en un ejemplo lo anteriormente mencionado, supongamos una máquina con un scheduler con
+un quantum de 8 ticks manejando temporalmente 
+1 tarea bloqueante $A$ (cuyos bloqueos duran 1 ciclo), y 2 tareas $B$ y $C$ que consumen CPU. En un principio todas entran al sorteo con 8
+tickets. Sin embargo, luego de que las tres han corrido por lo menos una vez, siempre entrarán al sorteo con una misma cantidad: $A=8, \ B=1, \ C=1$, con un total de
+10 tickets en circulación. Con estos valores, se espera que cada 10 sorteos (número que coincide con la cantidad de tickets en circulación): 8 sean ganados por A,
+1 sea ganado por B y 1 por C, con lo cual todas estarían corriendo la misma cantidad de ticks en el cpu. 
+
+
+
+
+ 

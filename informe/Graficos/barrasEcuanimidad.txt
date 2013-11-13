@@ -1,0 +1,4 @@
+0 bloqueante 27
+1 cpu1 28
+2 cpu2 20
+3 cpu3 12

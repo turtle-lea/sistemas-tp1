@@ -1,0 +1,31 @@
+Una vez que entendemos el simulador y usamos el graficador con un scheduler básico como lo es SchedFCFS nos proponemos a realizar nuevos schedulers: \textbf{SchedRR} y \textbf{SchedLottery}.
+
+\subsection{SchedRR}
+
+El siguiente paso fue completar la implementación de SchedRR, el cual se basa en el algoritmo de scheduling $round-robin$. 
+
+Básicamente las tareas forman una ronda para correr en algún núcleo (de haber más de uno). Cada CPU tiene asociado un quantum máximo, es decir, una cantidad máxima de ciclos en el cual puede correr una determinada tarea. El quantum de cada CPU es parámetro de nuestro scheduler.
+
+Así como el SchedFCFS, éste scheduler esta implementado sobre una cola de tareas global (para permitir migración), pero a diferencia del anterior, nuestro scheduler irá encolando a las tareas nuevamente en la cola una vez que sean desalojadas del CPU, ya sea por realizar una llamada bloqueante o debido a que su quantum se completó. Si la tarea se bloqueo, no sera encolada en la cola de tareas $ready$ hasta que se desbloquee, por lo cual la función UNBLOCK comienza a tener sentido y es ahi donde la tarea regresa a la cola.
+
+Para determinar si una tarea cumplió con el quantum máximo del CPU en la cual corre tenemos un vector de quantums parciales, un contador para cada CPU. Por cada tick se incrementa en uno y se resetea en caso de que la tarea sea desalojada. Notar que si la tarea se bloquea es desalojada y por lo tanto pierde su quantum.
+
+Como detalle de implementación determinamos que si alguna tarea se bloquea y no hay ninguna tarea lista para correr, es decir, la cola de tareas $ready$ esta vacia, ésta seguirá corriendo en el CPU para evitar pagar costos de cambio de contexto.
+
+Veamos el gráfico a continuación:
+
+\begin{figure}[H]
+\centering\includegraphics[width=15 cm]{graficos/ej4RR1.png}
+\centering\includegraphics[width=15 cm]{graficos/ej4RR2.png}
+\caption{Round-robin, un sólo núcleo de procesamiento en el primer caso, 4 en el segundo. Distintos lotes de tareas.}
+\end{figure}
+
+Se confeccionaron dos lotes diferentes para la figura 2. Para el primer caso se corrieron dos TaskCPU, una TaskConsola y dos TaskAlterno (alternan entre uso de CPU y llamadas bloqueantes). Como el primer gráfico muestra el comportamiento con un único núcleo es facil ver como SchedRR funciona. En orden de llegada cada tarea corre su quantum, o lo pierde si se bloquea para que otra tome su lugar.
+
+El segundo caso refleja el mismo funcionamiento pero quad-core, con iguales quantums máximos para cada CPU. En este caso el lote estaba compuesto por seis TaskCPU y sólo una TaskConsola. Como en el ejemplo no hay costos de migración, algunas tareas terminan el quantum de un núcleo y automáticamente corren en otro, pero es de esperarse. La TaskConsola se bloquea y libera el CPU para otras tareas.
+
+\subsection{SchedLottery y compensaciones probabilísticas}
+
+\input{sched_lottery.tex}
+\input{ecuanimidad_lottery.tex}
+\input{experimentos.tex}

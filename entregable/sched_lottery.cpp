@@ -29,8 +29,8 @@ SchedLottery::~SchedLottery() {
 
 
 void SchedLottery::load(int pid) {
-	tareasReady.push_back(make_pair(pid,max_quantum));
-	cantTickets+=max_quantum;
+	tareasReady.push_back(make_pair(pid,1));
+	cantTickets+=1;
 }
 
 void SchedLottery::unblock(int pid) {
@@ -39,6 +39,7 @@ void SchedLottery::unblock(int pid) {
 	cantTickets+=tickets;
 }
 
+/* Devuelve la cantidad de tickets con la que deberia empezar la tarea a desbloquear */
 int SchedLottery::searchDestroyBlocked(int pid){
 	int res;
 	for(unsigned int i=0;i<tareasBlocked.size();++i){
@@ -63,7 +64,7 @@ void SchedLottery::searchDestroyReady(int pid){
 int SchedLottery::tick(int cpu,const enum Motivo m) {
 	int actual = current_pid(cpu);
 	std::pair<int,int> res; 
-	int indice ;
+	int indice;
 	int proximo = actual;
 	double frac;
 	
@@ -125,7 +126,7 @@ std::pair<int,int> SchedLottery::lottery(){
 	std::pair<int,int> res;
 	int ticketGanador;
 	int suma = 0;
-	//srand(semilla);
+	srand(semilla);
 	ticketGanador = 1+rand()%cantTickets;
 	for (unsigned int i=0;i<tareasReady.size();++i){
 		suma += tareasReady[i].second;
@@ -134,5 +135,13 @@ std::pair<int,int> SchedLottery::lottery(){
 			break;
 		}
 	} 
+
+	/** Este if arregla un bug que todavia no terminamos de encontrar **/
+	/**
+	if (tareasReady.size() == 1){
+		res = make_pair(tareasReady[0].first,0);
+	}	
+	**/	
+
 	return res;
 }

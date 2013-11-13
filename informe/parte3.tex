@@ -1,0 +1,29 @@
+Para experimentar con los distintos algoritmos de scheduling planteados a lo largo del trabajo confeccionamos una nueva tarea 
+\textbf{TaskBatch} y un ''nuevo'' scheduler \textbf{SchedRR2}, el cual se basa también en el algoritmo $round-robin$ pero no permite migración entre núcleos.
+
+TaskBatch es una tarea que toma dos parámetros, $total\_cpu$ y $cant\_bloqueos$. Su función es bloquearse tantas veces como $cant\_bloqueos$ en momentos pseudoaleatorios, pero sin excederse jamas de $total\_cpu$ tiempo corriendo en el CPU. Es decir, la tarea correrá siempre un tiempo constante en el CPU, pero su tiempo total de ejecución dependerá de cuanto tiempo se bloquee y cuanto tiempo esperé en estado $ready$ para correr.
+
+Básicamente su implementación se resume en un ciclo. Por cada iteración se genera un número pseudoaleatorio en un rango razonable, el cual se compara con ciertos parámetros para determinar, con cierta probabilidad, si se bloquea o no en ese momento. Si se bloquea, disminuimos la cantidad de bloqueos restantes. En otro caso, diminuimos el tiempo que nos queda restante (en el cual se toma en cuenta el tiempo consumido por las llamadas bloqueantes y el exit). Si vemos que el tiempo corre y faltan llamadas bloqueantes, ellas se daran al hilo al final. De otro modo, si resulta que ya se ha bloquedo las veces que queriamos, usaremos el CPU el tiempo restante.
+
+Esa constancia en tiempo $running$ nos permite experimentar con más tranquilidad.
+
+~
+
+Luego nos planteamos determinar cual es el valor óptimo de quantum para ciertos schedulers, en particular experimentamos en el ejercicio 7 con el SchedRR, con costo de cambio de contexto de un ciclo y dos ciclos de costo de migración. Para ello planteamos dos diferentes métricas: Turn-around time y Waiting time.
+
+\subsection{Turn-around time}
+
+Aquí queremos ver como afecta el quantum que el scheduler determina para cada CPU en el tiempo de ejecución de cada tarea. Planteamos la siguiente ecuación:
+
+~
+
+$\frac{\#ciclosDeEjecucion}{quantum} * (quantum + costoContexto + costoMigracion) = tiempoDeEjec$
+
+~
+
+Podemos ver que a medida que el quantum es mayor, el tiempo de ejecución de cada tarea decrece, y es razonable puesto que si la tarea termina en un único quantum, no debe esperar a las demás tareas, pero terminamos en un FCFS.
+
+\subsection{Waiting time}
+
+Por otro lado vemos como el quantum afecta el tiempo de espera de cada tarea. Lo que buscamos en este caso es sacar un promedio de tiempo de estado $ready$ asociado a las tareas, es decir, un tiempo promedio de espera en el cual la tarea esta lista para ejecutar pero el scheduler no se lo permite.
+Podemos ver que al contrario del caso anterior, aquí un quantum menor parece ser lo mas razonable, ya que permite una mejor interactividad y cada tarea debe esperar menos para correr.

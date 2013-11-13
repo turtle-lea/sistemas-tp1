@@ -1,0 +1,95 @@
+/** SEING
+	* Las correcciones de Daniel J. Foguelman, con comentarios del buen Seing.
+*/
+
+TP Desaprobado
+//~ you don't say.
+
+Generales redaccion y presentación método y experimentación justificaciones
+Está suficientemente bien flojo, poca experimentacion pocas
+justificaciones, falta la utilizacion de metricas para comparar el
+comportamiento de los algoritmos.
+
+/** SEING
+	* mejore la introduccion, meti las metricas por encima, hay que mejorar la definicion pero no se si hacerlo
+	* en el ejercicio correspondiente o si ponerlo al principio y meterlo en todos los ejercicios.
+	* quiero definir bien el esquema del tp...
+*/ 
+
+Ejercicios 1 a 4 utilización del scheduler simulador graficador
+diagramas justificacion
+"Escueta explicacion implementacion, En round robin no hay explicacion
+sobre la implementacion.
+
+/** SEING
+	* Nada, voy a explicar mejor round robin, algun pseudocodigo quiza... no pense que era necesario explicarlo tanto.
+*/
+	
+Sobre la seudoaleatoriedad no comentan en que rango se mueve
+random_number."
+/** SEING 
+	* esto es una gilada, MAN rand... ya lo cambie. Solved.
+*/
+
+ "pocas corridas, no dan informacion
+lo usan correctamente pero no explican como lo usan"
+
+/**   */
+ "mal usado el
+graficador, no se ven los cores
+muestran que lo usan no dicen mucho"
+
+/** SEING
+	 * lo primero vimos que no es cierto, no se que quiere que digamos pero bueno, algo voy a chamuyar.
+*/
+
+ "no hay diagramas explicativos
+sobre las corridas
+no hay diagramas del comportamiento ni del TA ni del WT variando
+cantidad de cores" no hay justificacion sobre el comportamiento de fcfs 
+
+/** SEING
+	* puta madre, que paja. No quiero usar el otro graficador, es una paja.
+*/
+
+Ejercicio 5 y 6 explicación de implementación
+No explican la implementacion ni la idea del algorítmo de lottery,
+
+/** SEING
+	* creo que por error esta sched_lottery.tex no se incluyo y no lo mandamos a correccion siquiera.
+	* hay que revisarlo con cuidado porque no tiene primera correccion. que paja.
+*/
+
+taskbatch esta bien.
+//~ Superb.
+
+Ejercicio 7 métricas justificacion metrica experimentos gráficos
+inc inc. además confunden turnaround con tiempo de ejecucion. Wating
+time esta bien pero no lo grafican inc inc
+//~ oink oink.
+
+/** SEING
+	* lo de turnaround puede ser, lo explique en 2 min y como me acordaba que me habia dicho FEDE..
+	* OJO RIFLE que vos te vas a meter con esto, hay que buscar bien lo de las metricas. 
+*/
+
+
+//~ DE ACA EN MAS... seing out.
+
+Ejercicio 8 variacion de lotes justificacion lotes
+incompleto
+
+Ejercicio 9 Justificacion de equanimidad contempla todas las variables?
+contempla pseudoaleatoriedad?
+Mala justificación, no consideran tiempo bloqueado en la métrica q
+proponen, Hablan del tiempo “esperable” pero se quedan ahi. Análisis pobre.
+
+Ejercicio 10 "Evalua correctamente la optimizacion
+Del optimization ticket?"
+Es pobre, faltan experimentos, variaciones, etc. No hay buenas
+concluciones sobre por que esta bueno este scheduler
+
+
+TO RIFLE: PROMEDIO/MEDIA VARIANZA DESVIO ESTANDAR (barras de error: +-desvio estandar)
+
+ps -ef | wc -l para saber cuantos procesos hay

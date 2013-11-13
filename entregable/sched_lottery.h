@@ -14,9 +14,9 @@ class SchedLottery : public SchedBase {
 		virtual int tick(int cpu,const enum Motivo m);
 
 	private:
-//		int next(int cpu);
-//		int cores;
-//		std::vector<int> cpu_quantum;
+		//int next(int cpu);
+		//int cores;
+		//std::vector<int> cpu_quantum;
 		void searchDestroyReady(int);
 		int searchDestroyBlocked(int);
 		std::pair<int,int> lottery();

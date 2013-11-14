@@ -31,9 +31,9 @@ qm = int(sys.argv[3]) #quantumLimite
 cores = str(sys.argv[4]) #coresLimite
 
 for k in range(2,int(cores)+1):
+	print k
 	for i in range (1,qm):
 		j = str(i)
-		print j
 		
 		for s in range (0,20):
 			if (sched=="SchedLottery"):
@@ -106,7 +106,7 @@ for k in range(2,int(cores)+1):
 	plt.xlabel("Quantum")
 	plt.ylabel("Turnaround time")
 	plt.errorbar(x, yta, yerr=desviosTa, fmt='.', color='black')
-	plt.axis([0,qm,taMin-10,max(yta)+10])
+	plt.axis([0,qm,taMin-60,max(yta)+60])
 	savefig("experimento/cores_"+str(k)+"_ta.jpg")
 	
 	wtMin = 1000000

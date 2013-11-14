@@ -1,0 +1,9 @@
+\subsection{SchedRR vs SchedRR2}
+
+Para comparar el funcionamiento de los dos schedulers simularemos el comportamiento de ambos algoritmos utilizando tres lote de tareas:
+\begin{itemize}
+	\item Lote 1: combina varias tareas de uso intensivo de CPU y tareas interactivas (bloqueantes). La idea es simular un lote que podría estar corriendo en cualquier computadora hogareña. Este lote tendrá 180 tareas que es la cantidad de procesos corriendo actualmente en esta computadora.
+	\item Lote 2: conformada por tareas de tipo interactivas. Simulará a un lote de tareas de un celular.
+	\item Lote 3: conformada por tareas que solo hacen uso intensivo de CPU.
+\end{itemize}
+Para cada uno de los lotes calcularemos el waiting time y turnaround time promedio para cada scheduler tomando distintos valores de quantum y probando con 2, 3 y 4 cores. Teniendo en cuenta los resultados concluiremos cuál de los dos algoritmos se comporta mejor.

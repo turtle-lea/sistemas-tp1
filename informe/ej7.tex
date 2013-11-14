@@ -9,7 +9,7 @@ Para determinar el $quantum$ óptimo del scheduler $Round$ $Robin$ simulamos un 
 (El lote de tareas utilizado puede encontrarse en el archivo $loteBatch.tsk$.)
 
 Los costos de cambio de contexto y migración se fijaron en 1 y 2 (ciclos) respectivamente. Experimentamos utilizando varios núcleos de procesamiento.
-Graficamos los resultados de waiting time y turnaround time en función del quantum seteado para 2,3 y 4 cores. Debido a que las tareas $TaskBatch$ realizan bloqueos en momentos elegidos pseudoaleatoriamente, nos pareció correcto que para un quantum dado se obtengan varias (unas veinte) veces el waiting time y turnaround time para luego calcular un promedio. A su vez, tuvimos en cuenta el desvío estandar para realizar las barras de error en los gráficos. Los resultados obtenidos fueron los siguientes:
+Graficamos los resultados de waiting time y turnaround time en función del quantum seteado para 2,3 y 4 cores. Debido a que las tareas $TaskBatch$ realizan bloqueos en momentos elegidos pseudoaleatoriamente nos pareció correcto que, para un quantum dado, se obtengan varias veces (unas veinte) el waiting time y turnaround time para luego calcular un promedio. A su vez, tuvimos en cuenta el desvío estandar para realizar las barras de error en los gráficos. Los resultados obtenidos fueron los siguientes:
 
 \begin{figure}[H]
 	\begin{center}

@@ -13,17 +13,13 @@ Luego nos planteamos determinar cual es el valor óptimo de quantum para ciertos
 
 \subsection{Turn-around time}
 
-Aquí queremos ver como afecta el quantum que el scheduler determina para cada CPU en el tiempo de ejecución de cada tarea. Planteamos la siguiente ecuación:
+Aquí queremos ver como afecta el quantum que el scheduler determina para cada CPU en el tiempo de ejecución de cada tarea.
+Entendemos por turn-around time el tiempo total desde que se carga una tarea hasta que la misma termina.
 
-~
-
-$\frac{\#ciclosDeEjecucion}{quantum} * (quantum + costoContexto + costoMigracion) = tiempoDeEjec$
-
-~
-
-Podemos ver que a medida que el quantum es mayor, el tiempo de ejecución de cada tarea decrece, y es razonable puesto que si la tarea termina en un único quantum, no debe esperar a las demás tareas, pero terminamos en un FCFS.
+Podemos ver que a medida que el quantum es mayor, el turn-around time de cada tarea decrece, y es razonable puesto que si la tarea termina en un único ''gran'' quantum, no debe esperar a las demás tareas, pero llevado a ese extremo tendríamos un algoritmo FCFS que no permite demasiada interactividad.
 
 \subsection{Waiting time}
 
 Por otro lado vemos como el quantum afecta el tiempo de espera de cada tarea. Lo que buscamos en este caso es sacar un promedio de tiempo de estado $ready$ asociado a las tareas, es decir, un tiempo promedio de espera en el cual la tarea esta lista para ejecutar pero el scheduler no se lo permite.
 Podemos ver que al contrario del caso anterior, aquí un quantum menor parece ser lo mas razonable, ya que permite una mejor interactividad y cada tarea debe esperar menos para correr.
+

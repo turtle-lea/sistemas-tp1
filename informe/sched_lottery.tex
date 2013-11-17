@@ -26,6 +26,7 @@ De esta manera, las tareas de I/O tendrán más probabilidades de ganar los sort
 \begin{itemize}
   \item vector<int> cpu\_quantum: Arreglo en donde hay una posición por cada uno de los cores. En cada una queda registro de la cantidad de ticks durante los cuales el procesador ha permanecido
   en posesión del proceso actual. 
+  \item semilla: parámetro inicial que determina el inicio de la secuencia pseudoaleatoria.
   \item cantTickets: La cantidad de tickets total que participarán en el próximo sorteo.
   \item max\_quantum: Determina la duración del quantum. Sea \emph{core} uno de los procesadores.\\ 
   Cuando cpu\_quantum[core] $\geq$ max\_quantum, la tarea ha consumido la totalidad del quantum y es necesario realizar
@@ -34,7 +35,7 @@ De esta manera, las tareas de I/O tendrán más probabilidades de ganar los sort
   \item vector<tarea,\#tickets> tareasBlocked: Arreglo que contiene las tareas bloqueadas junto con la cantidad de tickets con las que participarán en el sorteo cuando vuelvan al estado Ready
 \end{itemize}
 
-\subsubsection{Pseucódigo}
+\subsubsection{Pseudocódigo}
 
 \begin{algorithmic}
   \Function{load}{int pid}
@@ -61,16 +62,6 @@ Al ser cargadas, las tareas comienzan inicialmente con un único ticket. Es impo
 
 Las tareas recientemente desbloqueadas participarán del próximo sorteo, por lo que son agregadas a \emph{tareasReady} y retiradas de \emph{tareasBlocked}.
 Es importante actualizar la variable \emph{cantTickets} para dejar actualizado el sorteo.
-
-~
-
-\begin{algorithmic}
-  \Function{unblock}{int pid}
-      \State Agrego a tareasReady la tupla <pid,\#tickets>, (\#tickets está almacenado en tareasBlocked).
-      \State Elimino de tareasBlocked la tupla <pid,\#tickets>
-      \State $cantTickets \gets cantTickets+\#tickets$;
-  \EndFunction
-\end{algorithmic}
 
 ~
 
@@ -126,6 +117,15 @@ Es importante actualizar la variable \emph{cantTickets} para dejar actualizado e
   \EndFunction
 \end{algorithmic}
 
+~
+
+\begin{algorithmic}
+  \Function{lottery}{}
+      \State semilla
+      \State Elimino de tareasBlocked la tupla <pid,\#tickets>
+      \State $cantTickets \gets cantTickets+\#tickets$;
+  \EndFunction
+\end{algorithmic}
 
 Para ejemplificar lo mencionado anteriormente, supongamos que en una computadora de un solo core se han lanzado dos procesos que corren en simultáneo. El primero de ellos, al cual llamaremos $A$, utiliza
 activamente el CPU sin necesidad de hacer llamados al sistema o esperar que se liberen recursos de la máquina (podría ser, por ejemplo, el caso de una aplicación científica que ejecuta gran cantidad de 
@@ -150,6 +150,8 @@ inversamente proporcional a la fracción de quantum que está usando.
 - Cuando se produce un tick y el scheduler detecta que la tarea consumió la totalidad de su quantum, la misma es desalojada y encolada en el vector de Ready's con un solo ticket.
 
 ~
+
+
 Poniendo en un ejemplo lo anteriormente mencionado, supongamos una máquina con un scheduler con
 un quantum de 8 ticks manejando temporalmente 
 1 tarea bloqueante $A$ (cuyos bloqueos duran 1 ciclo), y 2 tareas $B$ y $C$ que consumen CPU. En un principio todas entran al sorteo con 8

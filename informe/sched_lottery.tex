@@ -6,7 +6,7 @@ misma cantidad de tiempo de procesamiento y cuentan con un core entero a su disp
 permanecen bloqueadas.
 
 \begin{figure}[H]
-  \centering\includegraphics[width=18 cm]{graficos/inherente.png}
+  \centering\includegraphics[scale = 0.2]{graficos/inherente.png}
   \caption{Procesamiento simultáneo de una tarea I/O y otra de uso\_CPU}
 \end{figure}
 
@@ -26,6 +26,7 @@ De esta manera, las tareas de I/O tendrán más probabilidades de ganar los sort
 \begin{itemize}
   \item vector<int> cpu\_quantum: Arreglo en donde hay una posición por cada uno de los cores. En cada una queda registro de la cantidad de ticks durante los cuales el procesador ha permanecido
   en posesión del proceso actual. 
+  \item semilla: parámetro inicial que determina el inicio de la secuencia pseudoaleatoria.
   \item cantTickets: La cantidad de tickets total que participarán en el próximo sorteo.
   \item max\_quantum: Determina la duración del quantum. Sea \emph{core} uno de los procesadores.\\ 
   Cuando cpu\_quantum[core] $\geq$ max\_quantum, la tarea ha consumido la totalidad del quantum y es necesario realizar
@@ -34,7 +35,7 @@ De esta manera, las tareas de I/O tendrán más probabilidades de ganar los sort
   \item vector<tarea,\#tickets> tareasBlocked: Arreglo que contiene las tareas bloqueadas junto con la cantidad de tickets con las que participarán en el sorteo cuando vuelvan al estado Ready
 \end{itemize}
 
-\subsubsection{Pseucódigo}
+\subsubsection{Pseudocódigo}
 
 \begin{algorithmic}
   \Function{load}{int pid}
@@ -61,16 +62,6 @@ Al ser cargadas, las tareas comienzan inicialmente con un único ticket. Es impo
 
 Las tareas recientemente desbloqueadas participarán del próximo sorteo, por lo que son agregadas a \emph{tareasReady} y retiradas de \emph{tareasBlocked}.
 Es importante actualizar la variable \emph{cantTickets} para dejar actualizado el sorteo.
-
-~
-
-\begin{algorithmic}
-  \Function{unblock}{int pid}
-      \State Agrego a tareasReady la tupla <pid,\#tickets>, (\#tickets está almacenado en tareasBlocked).
-      \State Elimino de tareasBlocked la tupla <pid,\#tickets>
-      \State $cantTickets \gets cantTickets+\#tickets$;
-  \EndFunction
-\end{algorithmic}
 
 ~
 
@@ -126,7 +117,61 @@ Es importante actualizar la variable \emph{cantTickets} para dejar actualizado e
   \EndFunction
 \end{algorithmic}
 
+~
 
+\begin{algorithmic}
+  \Function{lottery}{}
+	\State $suma \gets 0$
+      	\State $semilla++$
+	\State srand(semilla)
+	\State $ticketGanador \gets (rand() \% cantTickets)+1$
+	\For{$i \gets 0$ to tareasReady.size()}
+		\State $suma \gets suma+ \#tickets$ de tarea i		
+		\If{$ticketGanador \leq suma$}
+			\State $res \gets$ tarea i
+			\State $cantTickets \gets $ \#tickets de tarea i	
+			\State Borro la tarea i de tareasReady
+			\State break
+		\EndIf
+	\EndFor	
+	\State \Return res
+  \EndFunction
+\end{algorithmic}
+
+~
+
+Para realizar el sorteo se selecciona un número aleatiro utilizando las funciones rand y srand (ya explicadas con anterioridad).
+
+Incrementamos el valor de la semilla para que la próxima vez el sorteo se realice con una secuencia pseudoaleatoria distinta.
+
+El sorteo se realiza específicamente en la línea: $ticketGanador$ = ( rand() \% (cantTickets) ) + 1.
+
+Recorremos la lista hasta encontrar la tarea con el ticket ganador.
+
+Decrementamos la cantidad de tickets y retiramos $res$ de la lista de tareasReady.
+
+~
+
+\begin{figure}[H]
+  \centering\includegraphics[scale=0.5]{graficos/lottery.jpg}
+  \caption{Funcionamiento de lottery()}
+\end{figure}
+
+~
+
+\subsubsection{Experimentando con SchedLottery con compensation tickets}
+
+Simulemos en primer lugar el comportamiento de nuestro scheduler para un lote de tareas de cálculo: es decir, procesos que no 
+efectúan instrucciones de I/0. A lo largo de la ejecución habrá tantos tickets como tareas, cada uno correspondiente a una
+tarea distinta. Por lo tanto, dado un lote de $n$ tareas cada una tiene una probabilidad de $\frac{1}{n}$ de obtener el procesador
+en el próximo quantum. El comportamiento esperado es de alguna forma similar al de round robin, ya que se espera que cada $n$
+quantums, cada tarea haya sido ejecutada durante 1 quantum.
+
+
+
+En el caso mostrado en el gráfico de arriba, ambas tareas requieren de 10 ticks de cpu para finalizar. Sin embargo, la tarea bloqueante tarda el doble de tiempo en terminar. 
+
+En el ejercicio 5 implementamos un scheduler en base al paper ''Lottery scheduling''. El mismo está diseñado para equilibrar esta desigualdad entre el \emph{turn-around} de las tareas relacionado con el
 Para ejemplificar lo mencionado anteriormente, supongamos que en una computadora de un solo core se han lanzado dos procesos que corren en simultáneo. El primero de ellos, al cual llamaremos $A$, utiliza
 activamente el CPU sin necesidad de hacer llamados al sistema o esperar que se liberen recursos de la máquina (podría ser, por ejemplo, el caso de una aplicación científica que ejecuta gran cantidad de 
 cuentas). Por otro lado tenemos a la tarea $B$, que ejecuta una instrucción bloqueante cada cierto tiempo, desbloquéandose luego de una cierta cantidad de ticks del reloj. Supongamos también que ambos conviven
@@ -150,6 +195,8 @@ inversamente proporcional a la fracción de quantum que está usando.
 - Cuando se produce un tick y el scheduler detecta que la tarea consumió la totalidad de su quantum, la misma es desalojada y encolada en el vector de Ready's con un solo ticket.
 
 ~
+
+
 Poniendo en un ejemplo lo anteriormente mencionado, supongamos una máquina con un scheduler con
 un quantum de 8 ticks manejando temporalmente 
 1 tarea bloqueante $A$ (cuyos bloqueos duran 1 ciclo), y 2 tareas $B$ y $C$ que consumen CPU. En un principio todas entran al sorteo con 8

@@ -86,6 +86,10 @@ int SchedRR2::tick(int cpu, const enum Motivo m) {
 			tareasBlocked[cpu].insert(actual);
 			actual = next(cpu);
 		}
+		else{
+			tareasBlocked[cpu].insert(actual);			
+			actual = IDLE_TASK;
+		}
 	}
 		
 	return actual;

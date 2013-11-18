@@ -13,7 +13,7 @@ touch loteRTC.tsk
 #celular
 for i in `seq 1 40`;
 do
-	echo "TaskConsola 50 1 100" >> loteCelular.tsk
+	echo "TaskConsola 20 1 15" >> loteCelular.tsk
 done
 
 #pc
@@ -25,9 +25,9 @@ do
 done
 
 #calculo
-for i in `seq 1 200`
+for i in `seq 1 50`
 do
-	if [ $i -lt "101" ];
+	if [ $i -lt "40" ];
 	then
 		echo "TaskCPU 75" >> loteCalc.tsk
 	else

@@ -6,7 +6,7 @@ misma cantidad de tiempo de procesamiento y cuentan con un core entero a su disp
 permanecen bloqueadas.
 
 \begin{figure}[H]
-  \centering\includegraphics[scale = 0.2]{graficos/inherente.png}
+  \centering\includegraphics[scale=0.5]{graficos/inherente.png}
   \caption{Procesamiento simultáneo de una tarea I/O y otra de uso\_CPU}
 \end{figure}
 
@@ -168,8 +168,64 @@ en el próximo quantum. El comportamiento esperado es de alguna forma similar al
 quantums, cada tarea haya sido ejecutada durante 1 quantum.
 
 
+\begin{figure}[H]
+  \centering\includegraphics[scale=0.5]{graficos/lottery_cpu.pdf}
+  \caption{SchedLottery en un lote de procesamiento cientifico. lote: *5 TaskCPU 20.
+	1 core, cambio de contexto y migración = 0, quantum = 5}
+\end{figure}
 
-En el caso mostrado en el gráfico de arriba, ambas tareas requieren de 10 ticks de cpu para finalizar. Sin embargo, la tarea bloqueante tarda el doble de tiempo en terminar. 
+~
+
+Efectivamente, en el recuadro negro que aparece en la figura el comportamiento es muy similar al de Round-Robin.
+
+\begin{itemize}
+	\item tarea 0: wt:16.5, ta:87
+	\item tarea 1: wt:10, ta:71
+	\item tarea 2: wt:16.4, ta:103
+	\item tarea 3: wt:21, ta:105
+	\item tarea 4: wt:20.75, ta:104
+	\item  Waiting time: 16.93
+	\item  Turnaround time: 94
+\end{itemize} 
+
+Observemos que tanto el wating time como el turn around time de cada una de las tareas no difiere demasiado entre sí (tal como hubiera sucedido en el Round-Robin).
+Si realizamos 40 corridas del mismo experimento, para un único core pero variando el quantum entre 1 y 5, obtenemos los siguientes gráficos, en donde se muestran
+el waiting-time promedio y el $turn-around$ promedio.
+
+
+\FloatBarrier
+
+\begin{figure}
+\hfill
+\subfigure[]{\includegraphics[width=8.75cm]{graficos/lottery_cpu_ta.jpg}}
+\hfill
+\subfigure[]{\includegraphics[width=8.75cm]{graficos/lottery_cpu_wt.jpg}}
+\hfill
+\caption{Turn around time y waiting time del SchedLottery del mismo lote de procesamiento cientìfico con los mismos paràmetros,
+	pero variando los quantums entre 1 y 5}
+\end{figure}
+
+El waiing-time promedio de 40 repeticiones para 5 cores es de 17.5, cercano al experimento particular aislado, en donde obtuvimos 16.93.
+El turn-time promedio de 40 repeticiones para 5 cores es de 85, cercano al experimento particular aislado, en donde obtuvimos 94.
+
+~
+
+Si comparamos los resultados obtenidos con los de un scheduler round-robin obtenemos:
+
+\begin{figure}
+\hfill
+\subfigure[]{\includegraphics[width=8.75cm]{graficos/lottery_rr_ta.jpg}}
+\hfill
+\subfigure[]{\includegraphics[width=8.75cm]{graficos/lottery_rr_wt.jpg}}
+\hfill
+\caption{Turn around time y waiting time del Round Robin del mismo lote de procesamiento cientìfico con los mismos paràmetros,
+	pero variando los quantums entre 1 y 5}
+\end{figure}
+
+Tal como era esperable, para lotes con tareas de igual cantidad de tickets ambos schedulers se comportan de forma muy similar.
+
+\FloatBarrier
+
 
 En el ejercicio 5 implementamos un scheduler en base al paper ''Lottery scheduling''. El mismo está diseñado para equilibrar esta desigualdad entre el \emph{turn-around} de las tareas relacionado con el
 Para ejemplificar lo mencionado anteriormente, supongamos que en una computadora de un solo core se han lanzado dos procesos que corren en simultáneo. El primero de ellos, al cual llamaremos $A$, utiliza

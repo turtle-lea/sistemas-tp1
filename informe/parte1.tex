@@ -22,9 +22,13 @@ De ese modo el tiempo $t$ se encuentra efectivamente dentro del intervalo desead
 
 Luego implementamos el scheduler \textbf{SchedFCFS}, que utiliza el algoritmo de First-Come First-Served. Es decir, las tareas se ejecutan por órden de llegada y hasta que finalice su ejecución. 
 
-Implementamos el SchedFCFS sobre una cola de tareas en estado $ready$, donde la función LOAD se resume en simplemente encolar el pid de la tarea a cargar y la función UNBLOCK no tiene implementación, dado que aún si la tarea se bloquea, ésta corre en el cpu hasta que finalice su espera.
+Implementamos el SchedFCFS sobre una cola global de tareas en estado $ready$, donde 
 
-La función TICK devuelve el pid de la tarea IDLE siempre y cuando la cola de tareas $ready$ este vacia y no haya una tarea corriendo en el cpu. De otro modo, devuelve la próxima tarea de la cola únicamente si se llama a esta función con motivo de exit y la tarea anterior termina.
+\begin{itemize}
+	\item la función LOAD se resume en simplemente encolar el pid de la tarea a cargar en la cola de tareas $ready$ 
+	\item la función UNBLOCK no tiene implementación, dado que aún si la tarea se bloquea, ésta corre en la cpu hasta que finalice su espera.
+	\item la función TICK devuelve el pid de la tarea IDLE siempre y cuando la cola de tareas $ready$ este vacia y no haya una tarea corriendo en el cpu. De otro modo, devuelve la próxima tarea de la cola únicamente si se llama a esta función con motivo de exit y la tarea anterior termina.
+\end{itemize}
 
 ~
 

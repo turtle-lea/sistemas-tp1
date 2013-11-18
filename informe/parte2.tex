@@ -4,13 +4,25 @@ Una vez que entendemos el simulador y usamos el graficador con un scheduler bás
 
 El siguiente paso fue completar la implementación de SchedRR, el cual se basa en el algoritmo de scheduling $round-robin$. 
 
-Básicamente las tareas forman una ronda para correr en algún núcleo (de haber más de uno). Cada CPU tiene asociado un quantum máximo, es decir, una cantidad máxima de ciclos en el cual puede correr una determinada tarea. El quantum de cada CPU es parámetro de nuestro scheduler.
+Básicamente las tareas forman una ronda para correr en algún núcleo (de haber más de uno). Cada CPU tiene asociado un quantum máximo, es decir, una cantidad máxima de ciclos en el cual puede correr una determinada tarea. El quantum máximo de cada CPU es parámetro de nuestro scheduler, y con ello generamos el vector $max_quantum$. Luego para contabilizar los ticks de cada proceso usamos el vector $cpu_quantum$ para los quantums parciales de cada CPU.
 
 Así como el SchedFCFS, éste scheduler esta implementado sobre una cola de tareas global (para permitir migración), pero a diferencia del anterior, nuestro scheduler irá encolando a las tareas nuevamente en la cola una vez que sean desalojadas del CPU, ya sea por realizar una llamada bloqueante o debido a que su quantum se completó. Si la tarea se bloqueo, no sera encolada en la cola de tareas $ready$ hasta que se desbloquee, por lo cual la función UNBLOCK comienza a tener sentido y es ahi donde la tarea regresa a la cola.
 
-Para determinar si una tarea cumplió con el quantum máximo del CPU en la cual corre tenemos un vector de quantums parciales, un contador para cada CPU. Por cada tick se incrementa en uno y se resetea en caso de que la tarea sea desalojada. Notar que si la tarea se bloquea es desalojada y por lo tanto pierde su quantum.
+Para determinar si una tarea cumplió con el quantum máximo del CPU en la cual corre utilizamos el vector de quantums parciales nombrado anteriormente. Por cada tick se incrementa en uno cada contador y se resetea en caso de que la tarea sea desalojada. Notar que si la tarea se bloquea es desalojada y por lo tanto pierde su quantum (se resetea el contador de quantum parcial para ese CPU).
 
-Como detalle de implementación determinamos que si alguna tarea se bloquea y no hay ninguna tarea lista para correr, es decir, la cola de tareas $ready$ esta vacia, ésta seguirá corriendo en el CPU para evitar pagar costos de cambio de contexto.
+En resumen:
+\begin{itemize}
+	\item la función LOAD simplemente pushea el pid de la tarea a cargar en la cola de tareas $ready$. 
+	\item la función UNBLOCK vuelve a incluir el pid de la tarea que se desbloquea en la cola de tareas $ready$.
+	\item la función TICK por otro lado varía según el motivo con la cual se la llama. 
+
+Si el motivo es ''TICK'', se incrementa el contador parcial del CPU y se determina si se ha terminado su quantum total. 
+	
+Si el motivo es ''BLOCK'' o ''EXIT'' la tarea se desaloja automáticamente y el quantum parcial es reseteado.
+
+En caso de que la tarea sea desalojada, se la reemplaza por otra de la cola de tareas $ready$ de existir, o con la IDLE\_TASK de otro modo. El contador parcial del CPU vuelve a cero.
+
+\end{itemize}
 
 Veamos el gráfico a continuación:
 

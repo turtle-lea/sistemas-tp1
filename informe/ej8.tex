@@ -1,11 +1,7 @@
 \subsection{SchedRR vs SchedRR2}
 
-Para comparar el funcionamiento de los dos schedulers simularemos el comportamiento de ambos algoritmos utilizando tres lote de tareas:
-\begin{itemize}
-	\item Lote 1: combina varias tareas de uso intensivo de CPU y tareas interactivas (bloqueantes). La idea es simular un lote que podría estar corriendo en cualquier computadora hogareña. Este lote tendrá 180 tareas que es la cantidad de procesos corriendo actualmente en esta computadora.
-	\item Lote 2: conformada por tareas de tipo interactivas. Simulará a un lote de tareas de un celular.
-	\item Lote 3: conformada por tareas que solo hacen uso intensivo de CPU.
-\end{itemize}
+Para comparar el funcionamiento de los dos schedulers simularemos el comportamiento de ambos algoritmos utilizando tres lote de tareas: $lotePc$, $loteCelular$ y $loteCalc$ (explicados anteriormente) con el fin de realizar una experimentación profunda sobre ambos algoritmos.
+
 Para cada uno de los lotes calcularemos el waiting time y turnaround time promedio para cada scheduler tomando distintos valores de quantum y probando con 2, 3 y 4 cores. Los costos de cambio de contexto y migración serán 1 y 2 repectivamente. Teniendo en cuenta los resultados concluiremos cuál de los dos algoritmos se comporta mejor.
 
 \subsubsection{Lote 1: Pc}
@@ -73,6 +69,7 @@ Para cada uno de los lotes calcularemos el waiting time y turnaround time promed
     4 & 58.5 & 44.98 & 1112.45 & 847.02 \\
 	\hline
     \end{tabular}
+\captionof{table}{Waiting time y Turnaround time promedio para cada scheduler}
 \end{center}
 
 Observando la tabla podemos concluir que el schedRR2 tiene un mejor wt y ta en promedio para un lote de tareas pc.
@@ -142,6 +139,7 @@ Observando la tabla podemos concluir que el schedRR2 tiene un mejor wt y ta en p
     4 & 24.58 & 10.67 & 696.76 & 404.9 \\
 	\hline
     \end{tabular}
+\captionof{table}{Waiting time y Turnaround time promedio para cada scheduler}
 \end{center}
 
 Observando la tabla podemos concluir que el schedRR2 tiene un mejor wt y ta en promedio para un lote de tareas celular.
@@ -211,6 +209,7 @@ Observando la tabla podemos concluir que el schedRR2 tiene un mejor wt y ta en p
     4 & 118.75 & 100.94 & 1537.24 & 1187.93 \\
 	\hline
     \end{tabular}
+\captionof{table}{Waiting time y Turnaround time promedio para cada scheduler}
 \end{center}
 
 Observando la tabla podemos concluir que el schedRR2 tiene un mejor wt y ta en promedio para un lote de tareas de uso intensivo de CPU.

@@ -36,6 +36,101 @@ Se confeccionaron dos lotes diferentes para la figura 2. Para el primer caso se 
 
 El segundo caso refleja el mismo funcionamiento pero quad-core, con iguales quantums máximos para cada CPU. En este caso el lote estaba compuesto por seis TaskCPU y sólo una TaskConsola. Como en el ejemplo no hay costos de migración, algunas tareas terminan el quantum de un núcleo y automáticamente corren en otro, pero es de esperarse. La TaskConsola se bloquea y libera el CPU para otras tareas.
 
+\subsubsection{Estructuras auxiliares}
+
+\begin{itemize}
+  \item vector<int> cpu\_quantum: Arreglo en donde hay una posición por cada uno de los cores. En cada una queda registro de la cantidad de ticks durante los cuales el procesador ha permanecido
+  en posesión del proceso actual. 
+  \item max\_quantum: Determina la duración del quantum. Sea \emph{core} uno de los procesadores.\\ 
+  Cuando cpu\_quantum[core] $\geq$ max\_quantum, la tarea ha consumido la totalidad del quantum y es necesario determinar la próxima tarea a ser ejecutada.
+  \item queue<int> tareas: cola de tareas en la cual se van encolando las tareas que se encuentran listas para correr.
+\end{itemize}
+
+\subsubsection{Pseudocódigo}
+
+\begin{algorithmic}
+  \Function{load}{int pid}
+      \State tareas.push(pid)
+  \EndFunction
+\end{algorithmic}
+
+~
+
+Una vez que llega una tarea procedemos a encolarla en $tareas$ de manera que el algoritmo sepa que se encuentra lista para correr.
+
+~
+
+\begin{algorithmic}
+  \Function{unblock}{int pid}
+      \State tareas.push(pid)
+  \EndFunction
+\end{algorithmic}
+
+~
+
+Las tareas recientemente desbloqueadas nuevamente se encuentran listas para correr por lo que volvemos a encolarla en $tareas$.
+
+~
+
+\begin{algorithmic}
+  \Function{tick}{int cpu, Motivo m}
+      \State $actual \gets$ tarea que está siendo ejecutada por el \emph{cpu} actualmente
+      \State $proximo \gets$ actual
+      
+      \If{m==EXIT}
+	  \If{!tareas.empty()}
+	      \State $proximo \gets next(cpu)$
+	  \Else
+	      \State $proximo \gets IDLE\_TASK$
+	  \EndIf
+      \EndIf
+      \State
+      \If{m==BLOCK}
+	  \State cpu\_quantum[cpu]++ 
+	  \If{!tareas.empty()}
+	      \State $proximo \gets next(cpu)$
+	  \Else
+	      \State $proximo \gets IDLE\_TASK$
+	  \EndIf
+      \EndIf
+      \If{m==TICK}
+	  \If{actual==IDLE\_TASK}
+	      \If{!tareas.empty()}
+		  \State $proximo \gets next(cpu)$
+	      \EndIf
+	      \State(Si no hay otras tareas, continúo ejecutando la IDLE)
+	  \Else(se está ejecutando una tarea)
+	      \State cpu\_quantum[cpu]++  
+	      \If{cpu\_quantum[cpu] $==$ max\_quantum[cpu]}
+		  \If{!tareas.empty()}
+		      \State $tareas.push(pid)$
+		      \State $proximo \gets next(cpu)$
+		  \EndIf
+		  \State(Si no hay otras tareas, continúo ejecutando la misma)
+	      \EndIf
+	   \EndIf
+      \EndIf
+      \State return $proximo$
+  \EndFunction
+\end{algorithmic}
+
+~
+
+\begin{algorithmic}
+  \Function{next}{cpu}
+	\State $int \ prox = tareas.front()$
+	\State $tareas.pop()$
+	\State $cpu\_quantum[cpu] = 0;$
+	\State $return prox;$
+  \EndFunction
+\end{algorithmic}
+
+~
+
+Para determinar la tarea siguiente a ser ejecutada popeamos la primer tarea que fue encolada y la eliminamos de la cola ya que no se quedará más tiempo en espera. También reseteamos el quantum ya que no seguirá corriendo la misma tarea que antes.
+
+~
+
 \subsection{SchedLottery y compensaciones probabilísticas}
 
 \input{sched_lottery.tex}

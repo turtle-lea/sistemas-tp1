@@ -26,7 +26,8 @@ De esta manera, las tareas de I/O tendrán más probabilidades de ganar los sort
 \begin{itemize}
   \item vector<int> cpu\_quantum: Arreglo en donde hay una posición por cada uno de los cores. En cada una queda registro de la cantidad de ticks durante los cuales el procesador ha permanecido
   en posesión del proceso actual. 
-  \item semilla: parámetro inicial que determina el inicio de la secuencia pseudoaleatoria.
+  \item semilla: parámetro inicial que determina el inicio de la secuencia pseudoaleatoria. Es muy importante ir variando este valor en el momento de 
+  realizar los sorteos, para cambiar la secuencia aleatoria utilizada y simular elecciones aleatorias.
   \item cantTickets: La cantidad de tickets total que participarán en el próximo sorteo.
   \item max\_quantum: Determina la duración del quantum. Sea \emph{core} uno de los procesadores.\\ 
   Cuando cpu\_quantum[core] $\geq$ max\_quantum, la tarea ha consumido la totalidad del quantum y es necesario realizar
@@ -142,7 +143,8 @@ Es importante actualizar la variable \emph{cantTickets} para dejar actualizado e
 
 Para realizar el sorteo se selecciona un número aleatiro utilizando las funciones rand y srand (ya explicadas con anterioridad).
 
-Incrementamos el valor de la semilla para que la próxima vez el sorteo se realice con una secuencia pseudoaleatoria distinta.
+Incrementamos el valor de la semilla para que la próxima vez el sorteo se realice con una secuencia pseudoaleatoria distinta. Esto es muy importante
+para lograr la simulación de un sorteo con elecciones aleatorias.
 
 El sorteo se realiza específicamente en la línea: $ticketGanador$ = ( rand() \% (cantTickets) ) + 1.
 
@@ -161,6 +163,10 @@ Decrementamos la cantidad de tickets y retiramos $res$ de la lista de tareasRead
 
 \subsubsection{Experimentando con SchedLottery con compensation tickets}
 
+~
+
+\textbf{\underline{Lote TaskCPU}}
+
 Simulemos en primer lugar el comportamiento de nuestro scheduler para un lote de tareas de cálculo: es decir, procesos que no 
 efectúan instrucciones de I/0. A lo largo de la ejecución habrá tantos tickets como tareas, cada uno correspondiente a una
 tarea distinta. Por lo tanto, dado un lote de $n$ tareas cada una tiene una probabilidad de $\frac{1}{n}$ de obtener el procesador
@@ -176,13 +182,13 @@ quantums, cada tarea haya sido ejecutada durante 1 quantum.
 
 ~
 
-Efectivamente, en el recuadro negro que aparece en la figura el comportamiento es muy similar al de Round-Robin.
+Efectivamente, en el recuadro negro que aparece en la figura se observa un comportamiento muy similar al de Round-Robin.
 
 \begin{itemize}
 	\item tarea 0: wt:16.5, ta:87
 	\item tarea 1: wt:10, ta:71
 	\item tarea 2: wt:16.4, ta:103
-	\item tarea 3: wt:21, ta:105
+	\item tarea 3: wt:21,PU ta:105
 	\item tarea 4: wt:20.75, ta:104
 	\item  Waiting time: 16.93
 	\item  Turnaround time: 94
@@ -192,8 +198,6 @@ Observemos que tanto el wating time como el turn around time de cada una de las 
 Si realizamos 40 corridas del mismo experimento, para un único core pero variando el quantum entre 1 y 5, obtenemos los siguientes gráficos, en donde se muestran
 el waiting-time promedio y el $turn-around$ promedio.
 
-
-\FloatBarrier
 
 \begin{figure}
 \hfill
@@ -205,7 +209,7 @@ el waiting-time promedio y el $turn-around$ promedio.
 	pero variando los quantums entre 1 y 5}
 \end{figure}
 
-El waiing-time promedio de 40 repeticiones para 5 cores es de 17.5, cercano al experimento particular aislado, en donde obtuvimos 16.93.
+El waiting-time promedio de 40 repeticiones para 5 cores es de 17.5, cercano al experimento particular aislado, en donde obtuvimos 16.93.
 El turn-time promedio de 40 repeticiones para 5 cores es de 85, cercano al experimento particular aislado, en donde obtuvimos 94.
 
 ~
@@ -218,13 +222,13 @@ Si comparamos los resultados obtenidos con los de un scheduler round-robin obten
 \hfill
 \subfigure[]{\includegraphics[width=8.75cm]{graficos/lottery_rr_wt.jpg}}
 \hfill
-\caption{Turn around time y waiting time del Round Robin del mismo lote de procesamiento cientìfico con los mismos paràmetros,
+\caption{Turn around time y waiting time del Round Robin del mismo lote de procesamiento cientìfico con los mismos parámetros,
 	pero variando los quantums entre 1 y 5}
 \end{figure}
 
 Tal como era esperable, para lotes con tareas de igual cantidad de tickets ambos schedulers se comportan de forma muy similar.
 
-\FloatBarrier
+
 
 
 En el ejercicio 5 implementamos un scheduler en base al paper ''Lottery scheduling''. El mismo está diseñado para equilibrar esta desigualdad entre el \emph{turn-around} de las tareas relacionado con el
@@ -260,7 +264,47 @@ tickets. Sin embargo, luego de que las tres han corrido por lo menos una vez, si
 10 tickets en circulación. Con estos valores, se espera que cada 10 sorteos (número que coincide con la cantidad de tickets en circulación): 8 sean ganados por A,
 1 sea ganado por B y 1 por C, con lo cual todas estarían corriendo la misma cantidad de ticks en el cpu. 
 
+~
 
+\textbf{\underline{Lote TaskConsola, igual cantidad de tickets}}
 
-
+Simulemos ahora el comportamiento de nuestro scheduler para un lote de tareas interactivas: por ejemplo, TaskConsola.
+Consideremos para una primera etapa un lote en donde las tareas se bloqueen la misma cantidad de ticks de CPU. Se espera que suceda algo muy similar
+al experimento anterior. El scheduler debería tener un comportamiento similar al de Round-Robin, ya que las tareas tendrían la misma cantidad de tickets
+en cada sorteo.
  
+\begin{figure}[H]
+  \centering\includegraphics[scale=0.5]{graficos/lottery_console.jpg}
+  \caption{SchedLottery en un lote de tareas interactivas. lote: *5 TaskConsola 5 1 1.
+	1 core, cambio de contexto y migración = 0, quantum = 5}
+\end{figure}
+ 
+Efectivamente, en el recuadro negro que aparece en la figura se observa un comportamiento muy similar al de Round-Robin.
+
+\begin{itemize}
+  \item tarea 0: wt:9.5, ta:30
+  \item tarea 1: wt:2, ta:15
+  \item tarea 2: wt:3.2, ta:27
+  \item tarea 3: wt:2.5, ta:21
+  \item tarea 4: wt:9, ta:29
+  \item Waiting time promedio: 5.24
+  \item Turnaround time promedio: 24.4
+\end{itemize}
+
+En esta corrida en particular el desvío estandar de ambas métricas es bastante grande, aunque interviene mucho el factor pseudoaleatorio.
+Al repetir el experimento 40 veces con los mismos parámetros, variando los quantums entre 1 y 5 obtenemos:
+
+
+\begin{figure}
+\hfill
+\subfigure[]{\includegraphics[width=8.75cm]{graficos/lottery_console_ta.jpg}}
+\hfill
+\subfigure[]{\includegraphics[width=8.75cm]{graficos/lottery_console_wt.jpg}}
+\hfill
+\caption{Turn around time y waiting time del SchedLottery del lote de procesamiento interactivo con los mismos parámetros,
+	pero variando los quantums entre 1 y 5}
+\end{figure}
+
+Comparando con el Round-Robin para el mismo lote:
+
+ARREGLAR: se está imprimiendo mal el waiting time del wtta.cpp y wtta2.cpp

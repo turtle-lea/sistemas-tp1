@@ -45,5 +45,42 @@ Podemos ver en la figura 1 que, si bien este algoritmo evita posibles costosos c
 
 Lo mismo sucede en el segundo caso, pero desde ya al correr las TaskConsola en paralelo, esto acorta considerablemente el tiempo de espera de la tarea intensiva en CPU. Luego las tres tareas en paralelo permiten con este algoritmo ahorrar en cambios de contexto o migración, ya que otro algoritmo podrìa rotar a las tareas entre los núcleos.
 
+\subsubsection{Estructuras auxiliares}
+
+La única estructura auxiliar que tenemos es una cola de tareas para determinar cuál será la siguiente tarea a ejecutar.
+
+\subsubsection{Pseudocódigo}
+
+\begin{algorithmic}
+  \Function{load}{int pid}
+      \State tareas.push(pid)
+  \EndFunction
+\end{algorithmic}
+
+~
+
+~
+
+\begin{algorithmic}
+  \Function{tick}{int cpu, Motivo m}
+      \State $actual \gets$ tarea que está siendo ejecutada por el \emph{cpu} actualmente
+      \State $proximo \gets$ actual
+      \If{actual==IDLE\_TASK and !tareas.empty()}
+           \State $proximo \gets tareas.front()$
+	   \State $tareas.pop()$
+      \EndIf
+      \If{m==EXIT}
+	   \If{!tareas.empty()}
+		\State $proximo \gets tareas.front()$
+		\State $tareas.pop()$
+	   \Else
+		\State $proximo \gets IDLE\_TASK$
+	   \EndIf
+      \EndIf
+      \State return $proximo$
+  \EndFunction
+\end{algorithmic}
+
+
 
 

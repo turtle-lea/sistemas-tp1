@@ -30,33 +30,33 @@ lote = str(sys.argv[2]) #lote de tareas
 qm = int(sys.argv[3]) #quantumLimite
 cores = str(sys.argv[4]) #coresLimite
 
-for k in range(2,int(cores)+1):
-	#print k
+for k in range(1,int(cores)+1):
 	for i in range (1,qm):
 		j = str(i)
 		print j
-		for s in range (0,20):
+		for s in range (0,40):
 			if (sched=="SchedLottery"):
-				os.system("./simusched "+lote+" "+str(k)+" 1 2 "+sched+" "+j+" "+j+" > test")
+				os.system("./simusched "+lote+" "+str(k)+" 0 0 "+sched+" "+j+" "+j+" > test")
 			if (sched=="SchedRR" or sched=="SchedRR2"):
-				string = "./simusched "+lote+" "+str(k)+" 1 2 "+sched+" "
+				string = "./simusched "+lote+" "+str(k)+" 0 0 "+sched+" "
 				for h in range(0,k):
 					string = string+j+" "
-				string = string+"> test"	
+				string = string+"> test"		
 				os.system(string)
+				
 			#os.system("python graphsched.py test")
 			os.system("./wtta < test > tmp")
 			
 			tmp1 = open("tmp",'r').read()
 			tmp = open("tmp",'r').readlines()
 			wt = tmp[0].split()
-			wt = float(wt[2])
+			wt = float(wt[2])	
 			ta = tmp[1].split()
 			ta = float(ta[2])
+			
 			wtProm.append(wt) 
 			taProm.append(ta) 
-			
-		#os.system("python graphsched.py test")		
+
 		wt = sum(wtProm) / float(len(wtProm))
 		ta = sum(taProm) / float(len(taProm))
 		desvioWt = [(z-wt)*(z-wt) for z in wtProm]
@@ -116,7 +116,6 @@ for k in range(2,int(cores)+1):
 	desviosWt=[]
 	desviosTa=[]
 	
-os.system("python graphsched.py test")		
 os.system("rm tmp")
-#os.system("rm test")	
+os.system("rm test")	
 os.system("mv wtta.out experimento/")

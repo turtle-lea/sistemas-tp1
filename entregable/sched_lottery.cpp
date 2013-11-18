@@ -43,6 +43,7 @@ void SchedLottery::load(int pid) {
 }
 
 void SchedLottery::unblock(int pid) {
+<<<<<<< HEAD
 	int ticket = searchDestroyBlocked(pid);
 	tareasReady.push_back(make_pair(pid,ticket));
 	cantTickets+=ticket;
@@ -55,6 +56,11 @@ void SchedLottery::unblock(int pid) {
 		tickets[i] = tareasBlocked[i].second;		
 	}
 	/** Debug **/
+=======
+	int tickets = searchDestroyBlocked(pid);
+	tareasReady.push_back(make_pair(pid,tickets));
+	cantTickets+= tickets;
+>>>>>>> ab61a9f30949389e6ff32828c5675b05e286a5db
 }
 
 /* Devuelve la cantidad de tickets con la que deberia empezar la tarea a desbloquear */
@@ -79,6 +85,7 @@ int SchedLottery::searchDestroyBlocked(int pid){
 	return res;
 }
 
+/*
 void SchedLottery::searchDestroyReady(int pid){
 	for(unsigned int i=0;i<tareasReady.size();++i){
 		if (tareasReady[i].first==pid){
@@ -87,10 +94,10 @@ void SchedLottery::searchDestroyReady(int pid){
 		}
 	}
 }
+*/
 
 int SchedLottery::tick(int cpu,const enum Motivo m) {
 	int actual = current_pid(cpu);
-	std::pair<int,int> res; 
 	int indice;
 	int proximo = actual;
 	double frac;
@@ -98,34 +105,27 @@ int SchedLottery::tick(int cpu,const enum Motivo m) {
 	if(m == EXIT){
 		cpu_quantum[cpu] = 0;
 		if(!tareasReady.empty()){
-			res = lottery(); // (pid,i)
-			proximo = res.first; indice = res.second;
-			cantTickets-=tareasReady[indice].second;
-			tareasReady.erase(tareasReady.begin()+indice); //no utilizamos el valor de retorno
+			proximo = lottery(); // (pid,i)
 		}else{
 			proximo = IDLE_TASK;
 		}
 	}
 	
 	if(m == TICK){
+		cpu_quantum[cpu]++;
 		if(actual == IDLE_TASK){
 			if(!tareasReady.empty()){
 				cpu_quantum[cpu] = 0;
-				res = lottery(); // (pid,i)
-				proximo = res.first; indice = res.second;
-				cantTickets-=tareasReady[indice].second;
-				tareasReady.erase(tareasReady.begin()+indice); //no utilizamos el valor de retorno
+				proximo = lottery(); // (pid,i)
 			}
 		}else{
-			cpu_quantum[cpu]++;	
 			if(cpu_quantum[cpu] >= max_quantum){
-				tareasReady.push_back(make_pair(proximo,1));
-				cantTickets++;
-				cpu_quantum[cpu] = 0;
-				res = lottery(); // (pid,i)
-				proximo = res.first; indice = res.second;
-				cantTickets-=tareasReady[indice].second;
-				tareasReady.erase(tareasReady.begin()+indice); //no utilizamos el valor de retorno
+				if(!tareasReady.empty()){
+					tareasReady.push_back(make_pair(proximo,1));
+					cantTickets++;
+					cpu_quantum[cpu] = 0;
+					proximo = lottery();
+				}
 			}
 		}
 	}
@@ -135,29 +135,44 @@ int SchedLottery::tick(int cpu,const enum Motivo m) {
 		frac = (double)max_quantum/(double)cpu_quantum[cpu];
 		frac = ceil(frac);
 		tareasBlocked.push_back(make_pair(actual,(int)frac));
-					
+		cpu_quantum[cpu] = 0;
+
 		if(!tareasReady.empty()){
-			cpu_quantum[cpu] = 0;
-			res = lottery(); // (pid,i)
-			proximo = res.first; indice = res.second;
-			cantTickets-=tareasReady[indice].second;
-			tareasReady.erase(tareasReady.begin()+indice); //no utilizamos el valor de retorno
+			proximo = lottery(); // (pid,i)
+		}else{
+			proximo = IDLE_TASK;
 		}
+
 	}
 	return proximo;
 }
 
+/*
+bool SchedLottery::already_blocked(int pid){
+	bool already_blocked = false;
+	int n= tareasBlocked.size();
+	for(int i=0; i<n; i++){
+		if(tareasBlocked[i].first == pid) already_blocked=true;
+	}
+	return already_blocked;
+}
+*/
 
-
-std::pair<int,int> SchedLottery::lottery(){
-	std::pair<int,int> res;
+int SchedLottery::lottery(){
+	semilla++;
+	int res;
 	int ticketGanador;
 	int suma = 0;
+	int x;
 	srand(semilla);
+	x = rand();	
+	ticketGanador = x%(cantTickets)+1;
 	for (unsigned int i=0;i<tareasReady.size();++i){
 		suma += tareasReady[i].second;
 		if (ticketGanador <= suma){
-			res = make_pair(tareasReady[i].first,i);
+			res = tareasReady[i].first;
+			cantTickets-=tareasReady[i].second;
+			tareasReady.erase(tareasReady.begin()+i); //no utilizamos el valor de retorno
 			break;
 		}
 	} 

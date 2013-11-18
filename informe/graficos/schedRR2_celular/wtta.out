@@ -1,0 +1,182 @@
+Quantum: 1
+Waiting time: 30.19146
+Turnaround time: 815.38125
+Quantum: 2
+Waiting time: 30.31859
+Turnaround time: 815.5
+Quantum: 3
+Waiting time: 30.25726
+Turnaround time: 816.05875
+Quantum: 4
+Waiting time: 30.21727
+Turnaround time: 815.745
+Quantum: 5
+Waiting time: 30.28241
+Turnaround time: 815.66625
+Quantum: 6
+Waiting time: 30.298795
+Turnaround time: 815.8075
+Quantum: 7
+Waiting time: 30.279915
+Turnaround time: 815.78
+Quantum: 8
+Waiting time: 30.290345
+Turnaround time: 815.9025
+Quantum: 9
+Waiting time: 30.230415
+Turnaround time: 815.59
+Quantum: 10
+Waiting time: 30.074595
+Turnaround time: 814.84375
+Quantum: 11
+Waiting time: 30.28351
+Turnaround time: 815.73375
+Quantum: 12
+Waiting time: 30.25917
+Turnaround time: 816.06375
+Quantum: 13
+Waiting time: 30.275255
+Turnaround time: 815.71875
+Quantum: 14
+Waiting time: 30.235995
+Turnaround time: 815.5825
+Quantum: 15
+Waiting time: 30.19983
+Turnaround time: 815.5125
+Quantum: 16
+Waiting time: 30.16628
+Turnaround time: 815.89
+Quantum: 17
+Waiting time: 30.294025
+Turnaround time: 815.77
+Quantum: 18
+Waiting time: 30.287515
+Turnaround time: 815.81125
+Quantum: 19
+Waiting time: 30.25042
+Turnaround time: 815.6725
+
+Quantum con menor waiting time: 10(30.074595)
+Quantum con menor turnaround time: 10(814.84375)
+
+Quantum: 1
+Waiting time: 17.170585
+Turnaround time: 541.81625
+Quantum: 2
+Waiting time: 17.16921
+Turnaround time: 541.95875
+Quantum: 3
+Waiting time: 17.132995
+Turnaround time: 542.16125
+Quantum: 4
+Waiting time: 17.21172
+Turnaround time: 542.1475
+Quantum: 5
+Waiting time: 17.175025
+Turnaround time: 542.32875
+Quantum: 6
+Waiting time: 17.20728
+Turnaround time: 541.8675
+Quantum: 7
+Waiting time: 17.176435
+Turnaround time: 541.98875
+Quantum: 8
+Waiting time: 17.1917
+Turnaround time: 542.635
+Quantum: 9
+Waiting time: 17.18596
+Turnaround time: 542.37
+Quantum: 10
+Waiting time: 17.221455
+Turnaround time: 542.09875
+Quantum: 11
+Waiting time: 17.22977
+Turnaround time: 542.11875
+Quantum: 12
+Waiting time: 17.222235
+Turnaround time: 542.3925
+Quantum: 13
+Waiting time: 17.210635
+Turnaround time: 542.31375
+Quantum: 14
+Waiting time: 17.203245
+Turnaround time: 541.91125
+Quantum: 15
+Waiting time: 17.136225
+Turnaround time: 542.21375
+Quantum: 16
+Waiting time: 17.17894
+Turnaround time: 541.8
+Quantum: 17
+Waiting time: 17.25974
+Turnaround time: 542.01
+Quantum: 18
+Waiting time: 17.23285
+Turnaround time: 542.30625
+Quantum: 19
+Waiting time: 17.289465
+Turnaround time: 542.71125
+
+Quantum con menor waiting time: 3(17.132995)
+Quantum con menor turnaround time: 16(541.8)
+
+Quantum: 1
+Waiting time: 10.674875
+Turnaround time: 404.63125
+Quantum: 2
+Waiting time: 10.707955
+Turnaround time: 405.19
+Quantum: 3
+Waiting time: 10.672505
+Turnaround time: 404.66625
+Quantum: 4
+Waiting time: 10.650265
+Turnaround time: 405.14875
+Quantum: 5
+Waiting time: 10.68109
+Turnaround time: 404.64875
+Quantum: 6
+Waiting time: 10.63687
+Turnaround time: 405.00375
+Quantum: 7
+Waiting time: 10.684525
+Turnaround time: 404.59125
+Quantum: 8
+Waiting time: 10.639205
+Turnaround time: 404.73125
+Quantum: 9
+Waiting time: 10.71459
+Turnaround time: 405.32875
+Quantum: 10
+Waiting time: 10.705525
+Turnaround time: 404.80375
+Quantum: 11
+Waiting time: 10.64176
+Turnaround time: 404.64625
+Quantum: 12
+Waiting time: 10.6212
+Turnaround time: 405.25125
+Quantum: 13
+Waiting time: 10.63469
+Turnaround time: 404.8775
+Quantum: 14
+Waiting time: 10.713225
+Turnaround time: 405.20125
+Quantum: 15
+Waiting time: 10.643255
+Turnaround time: 404.26375
+Quantum: 16
+Waiting time: 10.65
+Turnaround time: 405.04
+Quantum: 17
+Waiting time: 10.67203
+Turnaround time: 405.035
+Quantum: 18
+Waiting time: 10.720965
+Turnaround time: 405.0425
+Quantum: 19
+Waiting time: 10.6565
+Turnaround time: 405.00125
+
+Quantum con menor waiting time: 12(10.6212)
+Quantum con menor turnaround time: 15(404.26375)

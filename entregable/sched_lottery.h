@@ -19,7 +19,8 @@ class SchedLottery : public SchedBase {
 		//std::vector<int> cpu_quantum;
 		void searchDestroyReady(int);
 		int searchDestroyBlocked(int);
-		std::pair<int,int> lottery();
+		int lottery();
+		//bool already_blocked(int pid);
 
 		int cores;
 		std::vector<int> cpu_quantum;

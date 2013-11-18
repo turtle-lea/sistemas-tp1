@@ -1,9 +1,9 @@
 El siguiente trabajo tiene como objetivo analizar distintos algoritmos de $scheduling$, evaluándolos sobre distintos lotes de tareas. 
 
-Para construir lotes variados implementamos diferentes tareas que simulan los distintos tipos de ellas, sean de procesamiento intenso o interactivas, etc. La idea es construir lotes con los cuales analizar el comportamiento de los distintos $schedulers$ simulando posibles diferentes arquitecturas, por ejemplo lotes con muchas tareas interactivas podrían ser propios de celulares, o de una PC combinandose con tareas de procesamiento intenso. Incluso podríamos querer simular máquinas de mucho procesamiento de datos.
+Para construir lotes variados implementamos diferentes tareas que simulan los distintos tipos, sean de procesamiento intenso o interactivas, etc. La idea es construir lotes con los cuales analizar el comportamiento de los distintos $schedulers$ simulando posibles diferentes arquitecturas, por ejemplo lotes con muchas tareas interactivas podrían ser propios de celulares, o de una PC combinandose con tareas de procesamiento intenso. Incluso podríamos querer simular máquinas de mucho procesamiento de datos.
 
 Se implementaron cuatro algoritmos de $scheduling$ y se evaluó su desempeño sobre los diferentes lotes de tareas mencionados anteriormente en base a dos métricas: Turn-around time y Waiting time.
 
 Para un mejor análisis, la cátedra nos facilitó un graficador para el status de las tareas y los núcleos de procesamiento, que toma de entrada el output del simulador $simusched$ (también provisto por la cátedra) el cual utiliza los algoritmos de $scheduling$ programados por nosotros.
 
-El trabajo fue dividido en tres partes:
+El trabajo fue dividido en tres partes: Parte I: Entendiendo \emph{simusched}, Parte II: Extendiendo el simulador con nuevos schedulers, Parte III: Evaluando los algoritmos de scheduling.

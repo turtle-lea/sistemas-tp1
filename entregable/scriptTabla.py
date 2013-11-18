@@ -27,6 +27,7 @@ for j in range (0,3):
 				print "Cores: "+str(j+2)
 				print "wt :"+str(contwt/19)
 				print "ta: "+str(contta/19)
-																																				
+				contwt=0
+				contta=0																																
 				i=i+4
 				break	

@@ -12,56 +12,31 @@ Los costos de cambio de contexto y migración se fijaron en 1 y 2 (ciclos) respe
 Graficamos los resultados de waiting time y turnaround time en función del quantum para 2,3 y 4 cores. Debido a que las tareas $TaskBatch$ realizan bloqueos en momentos elegidos pseudoaleatoriamente nos pareció correcto que, para un quantum dado, se hagan varias corridas (veinte) con el fin de obtener un waiting time y turnaround time promedio. A su vez, tuvimos en cuenta el desvío estandar de estas mediciones para realizar las barras de error en los gráficos. Los resultados obtenidos fueron los siguientes:
 
 \begin{figure}[H]
-	\begin{center}
-		  \includegraphics[scale=0.3]{graficos/cores_2_wt.jpg}
-		  \caption{Representación de Waiting time en función del quantum para un procesador de 2 núcleos utilizando un lote de tareas $taskBatch$}
-		  \label{fig:contra1}
-	\end{center}
+\hfill
+\subfigure[]{\includegraphics[width=8.75cm]{graficos/cores_2_wt.jpg}}
+\hfill
+\subfigure[]{\includegraphics[width=8.75cm]{graficos/cores_2_ta.jpg}}
+\hfill
+\caption{Representación de Waiting time y Turnaround time en función del quantum para un procesador de 2 núcleos utilizando un lote de tareas $taskBatch$}
 \end{figure}
 
 \begin{figure}[H]
-	\begin{center}
-		  \includegraphics[scale=0.3]{graficos/cores_2_ta.jpg}
-		  \caption{Representación de Turnaround time en función del quantum para un procesador de 2 núcleos utilizando un lote de tareas $taskBatch$}
-		  \label{fig:contra1}
-	\end{center}
+\hfill
+\subfigure[]{\includegraphics[width=8.75cm]{graficos/cores_3_wt.jpg}}
+\hfill
+\subfigure[]{\includegraphics[width=8.75cm]{graficos/cores_3_ta.jpg}}
+\hfill
+\caption{Representación de Waiting time y Turnaround time en función del quantum para un procesador de 3 núcleos utilizando un lote de tareas $taskBatch$}
 \end{figure}
 
 \begin{figure}[H]
-	\begin{center}
-		  \includegraphics[scale=0.3]{graficos/cores_3_wt.jpg}
-		  \caption{Representación de Waiting time en función del quantum para un procesador de 3 núcleos utilizando un lote de tareas $taskBatch$}
-		  \label{fig:contra1}
-	\end{center}
-\end{figure}
-
-\begin{figure}[H]
-	\begin{center}
-		  \includegraphics[scale=0.3]{graficos/cores_3_ta.jpg}
-		  \caption{Representación de Turnaround time en función del quantum para un procesador de 3 núcleos utilizando un lote de tareas $taskBatch$}
-		  \label{fig:contra1}
-	\end{center}
-\end{figure}
-
-\begin{figure}[H]
-	\begin{center}
-		  \includegraphics[scale=0.3]{graficos/cores_4_wt.jpg}
-		  \caption{Representación de Waiting time en función del quantum para un procesador de 4 núcleos utilizando un lote de tareas $taskBatch$}
-		  \label{fig:contra1}
-	\end{center}
-\end{figure}
-
-\begin{figure}[H]
-	\begin{center}
-		  \includegraphics[scale=0.3]{graficos/cores_4_ta.jpg}
-		  \caption{Representación de Turnaround time en función del quantum para un procesador de 4 núcleos utilizando un lote de tareas $taskBatch$}
-		  \label{fig:contra1}
-	\end{center}
+\hfill
+\subfigure[]{\includegraphics[width=8.75cm]{graficos/cores_4_wt.jpg}}
+\hfill
+\subfigure[]{\includegraphics[width=8.75cm]{graficos/cores_4_ta.jpg}}
+\hfill
+\caption{Representación de Waiting time y Turnaround time en función del quantum para un procesador de 4 núcleos utilizando un lote de tareas $taskBatch$}
 \end{figure}
 
 Como puede observarse en las figuras 8, 10 y 12, los valores de waiting time obtenidos no difieren demasiado al ir variando los quantums para cada tarea. Este comportamiento no ocurre en los gráficos de turnaround time en donde comienzan a tenerse resultados similares a partir de un quantum igual a 8. Es por esta razón que nos pareció apropiado determinar un quantum óptimo de 8 ticks para el lote de tareas $TaskBatch$ presentado.
-
-%En los gráficos de waiting time (8, 10 y 12) podemos observar que, para cualquier quantum dado, los valores de waiting time obtenidos
-
-%Teniendo en cuenta los gráficos 8, 10 y 12 podemos observar que los valores de waiting time obtenidos para cada quantum no difieren demasiado. Esto no ocurre para los demás graficos en donde el turnaround time comienza a estabilizarse a partir de un quantum igual a 7. Es por esta razón que nos pareció apropiado determinar un quantum óptimo de 7 ticks para el lote de tareas $TaskBatch$ presentado.
 

@@ -59,7 +59,7 @@ int SchedRR::tick(int cpu, const enum Motivo m) {
 		if(!tareas.empty()){
 			actual = next(cpu);
 		}
-		else actual=IDLE_TASK; //Cambie esto y magicamente ya no se tilda. Estara bien? //Rifle
+		else actual=IDLE_TASK; 
 	}
 		
 	return actual;

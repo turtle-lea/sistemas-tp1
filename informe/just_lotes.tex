@@ -1,0 +1,11 @@
+Luego de verificar el correcto funcionamiento de los algoritmos de $scheduling$ que hicimos con pequeños lotes de tareas, y con el fin de comparar y analizar más profundamente los distintos algoritmos, decidimos generar lotes principales más grandes y organizados que intenten simular los distintos lotes típicos de distintas arquitecturas.
+
+Así surgió el $generador\_lotes.sh$ que produce cuatro lotes a conocer:
+
+\begin{itemize}
+	\item $loteCelular.tsk$ posee un total de 40 tareas interactivas (taskConsola), simula un ambiente interactivo que podría entenderse como acceso a internet o comunicación con otro dispositivo, etc.
+	\item $lotePC.tsk$ posee un total de 60 tareas de distintos tipos (bloqueantes, uso intenso cpu, etc.), dado el amplio uso que puede otorgarse a una PC. Consideramos que aunque 60 parece ser un número bajo para una PC promedio (visto que se suelen encontrar entre 150 y 200 procesos corriendo en una PC con el comando \textbf{ps -ef | wc -l} en linux), es un número que permite un buen análisis y a la vez simplifica el tiempo de cómputo.
+	\item $loteCalc.tsk$ está compuesto por 200 tareas de procesamiento intenso.
+	\item $loteRTC.tsk$ simula una arquitectura de $real-time computing$ o cómputo en tiempo real, con un total de 100 taskBatch dado que es tan importante el procesamiento intenso como la interactividad.
+\end{itemize}
+

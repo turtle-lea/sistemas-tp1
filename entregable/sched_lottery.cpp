@@ -133,7 +133,7 @@ int SchedLottery::lottery(){
 	int x;
 	srand(semilla);
 	x = rand();	
-	ticketGanador = x%(cantTickets+1);
+	ticketGanador = x%(cantTickets)+1;
 	for (unsigned int i=0;i<tareasReady.size();++i){
 		suma += tareasReady[i].second;
 		if (ticketGanador <= suma){

@@ -5,7 +5,7 @@ As\'i surgi\'o el $generador\_lotes.sh$ que produce cuatro lotes a conocer:
 \begin{itemize}
 	\item $loteCelular.tsk$ posee un total de 40 tareas interactivas (taskConsola), simula un ambiente interactivo que podr\'ia entenderse como acceso a internet o comunicaci\'on con otro dispositivo, etc.
 	\item $lotePC.tsk$ posee un total de 60 tareas de distintos tipos (bloqueantes, uso intenso cpu, etc.), dado el amplio uso que puede otorgarse a una PC. Consideramos que aunque 60 parece ser un n\'umero bajo para una PC promedio (visto que se suelen encontrar entre 150 y 200 procesos corriendo en una PC con el comando \textbf{ps -ef | wc -l} en linux), es un n\'umero que permite un buen an\'alisis y a la vez simplifica el tiempo de c\'omputo.
-	\item $loteCalc.tsk$ est\'a compuesto por 200 tareas de procesamiento intenso.
-	\item $loteRTC.tsk$ simula una arquitectura de $real-time computing$ o c\'omputo en tiempo real, con un total de 100 taskBatch dado que es tan importante el procesamiento intenso como la interactividad.
+	\item $loteCalc.tsk$ est\'a compuesto por 50 tareas de procesamiento intenso.
+	\item $loteRTC.tsk$ simula una arquitectura de $real-time computing$ o c\'omputo en tiempo real, con un total de 50 taskBatch dado que es tan importante el procesamiento intenso como la interactividad.
 \end{itemize}
 

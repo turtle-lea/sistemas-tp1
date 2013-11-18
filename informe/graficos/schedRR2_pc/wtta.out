@@ -57,7 +57,9 @@ Waiting time: 124.578
 Turnaround time: 1321.475
 
 Quantum con menor waiting time: 1(53.65361)
-Quantum con menor turnaround time: 17(1313.3455)Quantum: 1
+Quantum con menor turnaround time: 17(1313.3455)
+
+Quantum: 1
 Waiting time: 33.28883
 Turnaround time: 1867.436
 Quantum: 2
@@ -116,7 +118,9 @@ Waiting time: 137.34995
 Turnaround time: 1191.474
 
 Quantum con menor waiting time: 1(33.28883)
-Quantum con menor turnaround time: 17(1180.105)Quantum: 1
+Quantum con menor turnaround time: 17(1180.105)
+
+Quantum: 1
 Waiting time: 23.42969
 Turnaround time: 1373.4435
 Quantum: 2

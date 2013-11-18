@@ -11,7 +11,7 @@ for i in range(40):
 	nombre_png = "../lotes_lottery/lote1.in.png"
 	nombre_test = "../lotes_lottery/test_"+str(i)+".png"
 
-	os.system("./simusched "+nombre_tsk+" 1 0 0 SchedLottery 2 "+str(3*i)+ " > "+ nombre_in)
+	os.system("./simusched "+nombre_tsk+" 1 1 0 SchedLottery 2 "+str(3*i)+ " > "+ nombre_in)
 	#s.system("cp test experimento_8/"+nombre_test)
 	os.system("python graphsched.py "+nombre_in)
 	os.system("mv "+nombre_png+" "+nombre_test)

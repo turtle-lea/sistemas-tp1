@@ -31,16 +31,43 @@ SchedLottery::~SchedLottery() {
 void SchedLottery::load(int pid) {
 	tareasReady.push_back(make_pair(pid,1));
 	cantTickets+=1;
+	/** Debug **/
+	int n = tareasReady.size();
+	int tareas[n];
+	int tickets[n];
+	/** Debug **/
+	for(int i=0; i<n; i++){
+		tareas[i] = tareasReady[i].first;	
+		tickets[i] = tareasReady[i].second;	
+	}
 }
 
 void SchedLottery::unblock(int pid) {
-	int tickets = searchDestroyBlocked(pid);
-	tareasReady.push_back(make_pair(pid,tickets));
-	cantTickets+=tickets;
+	int ticket = searchDestroyBlocked(pid);
+	tareasReady.push_back(make_pair(pid,ticket));
+	cantTickets+=ticket;
+	/** Debug **/
+	int n = tareasBlocked.size();
+	int tareasB[n];
+	int tickets[n];
+	for(int i=0; i<n; i++){
+		tareasB[i] = tareasBlocked[i].first;		
+		tickets[i] = tareasBlocked[i].second;		
+	}
+	/** Debug **/
 }
 
 /* Devuelve la cantidad de tickets con la que deberia empezar la tarea a desbloquear */
 int SchedLottery::searchDestroyBlocked(int pid){
+	/** Debug **/
+	int n = tareasBlocked.size();
+	int tareasB[n];
+	int tickets[n];
+	for(int i=0; i<n; i++){
+		tareasB[i] = tareasBlocked[i].first;		
+		tickets[i] = tareasBlocked[i].second;		
+	}
+	/** Debug **/
 	int res;
 	for(unsigned int i=0;i<tareasBlocked.size();++i){
 		if (tareasBlocked[i].first==pid){
@@ -127,7 +154,6 @@ std::pair<int,int> SchedLottery::lottery(){
 	int ticketGanador;
 	int suma = 0;
 	srand(semilla);
-	ticketGanador = 1+rand()%cantTickets;
 	for (unsigned int i=0;i<tareasReady.size();++i){
 		suma += tareasReady[i].second;
 		if (ticketGanador <= suma){

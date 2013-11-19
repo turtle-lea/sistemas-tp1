@@ -341,12 +341,46 @@ bloqueantes, por lo que estas últimas deberían tener más tickets y por lo tan
 	\item  Turnaround time: 59
 \end{itemize}
 
+\begin{figure}[H]
+  \centering\includegraphics[scale=0.5]{graficos/peor.png}
+  \caption{Round Robin en un lote de tareas mixto. lote: TaskConsola 5 4 4, *2 TaskCPU 20.
+	1 core, cambio de contexto = 1 y migración = 0, quantum = 4}
+\end{figure}
+
 Hay que destacar que la tarea bloqueante gana muchos más sorteos que las otras dos tareas de procesamiento, ya que dispone de 4 tickets (las otras 2 cuentan con 1 único tickets).
-No es casualidad que la tarea bloqueante disponga del waiting time más bajo de todas.
+No es casualidad que la tarea bloqueante disponga del waiting time más bajo de todas. Tal como era esperable, el turnaround time de la tarea interactiva es superior en el 
+Round Robin.
 
 ~
 
 \textbf{\underline{Sin la optimización de compensation tickets}}
 
 Sin las optimizaciones, tal como mencionamos anteriormente, el scheduler se comporta muy similar a un round robin, ya que todas tienen las mismas probabilidades de salir sorteadas.
+
+~
+
+\textbf{\underline{SchedLottery para lote celular de 4 cores}}
+
+\begin{figure}
+\hfill
+\subfigure[]{\includegraphics[width=8.75cm]{graficos/SchedLottery_celular/lottery_celular.jpg}}
+\hfill
+\subfigure[]{\includegraphics[width=8.75cm]{graficos/SchedLottery_celular/lottery_celular_wt.jpg}}
+\hfill
+\caption{Turn around time y waiting time del SchedLottery para un lote celular y 4 cores}
+\end{figure}
+
+Los valores del turn-around time y del waiting-time en función del quantum, al igual que en el mismo experimento para el resto de los schedulers no varía demasiado, ya que 
+las tareas del lote celular son del tipo bloqueante. En este tipo de lotes, el sistema de compensation tickets no generas diferencias como en los lotes mixtos.
+
+\begin{figure}
+\hfill
+\subfigure[]{\includegraphics[width=8.75cm]{graficos/lottery_pc_ta.jpg}}
+\hfill
+\subfigure[]{\includegraphics[width=8.75cm]{graficos/lottery_pc_wt.jpg}}
+\hfill
+\caption{Turn around time y waiting time del SchedLottery para un lote pc y 4 cores}
+\end{figure}
+
+Para el lote PC es mucho más notoria la varación de las métricas en función del quantum. Los resultados arrojados son muy similares a los de Round Robin.
 

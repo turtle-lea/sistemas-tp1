@@ -175,9 +175,9 @@ quantums, cada tarea haya sido ejecutada durante 1 quantum.
 
 
 \begin{figure}[H]
-  \centering\includegraphics[scale=0.5]{graficos/lottery_cpu.pdf}
+  \centering\includegraphics[scale=0.5]{graficos/lottery_cpu.jpg}
   \caption{SchedLottery en un lote de procesamiento cientifico. lote: *5 TaskCPU 20.
-	1 core, cambio de contexto y migración = 0, quantum = 5}
+	1 core, cambio de contexto = 1, migración = 0, quantum = 5}
 \end{figure}
 
 ~
@@ -185,17 +185,18 @@ quantums, cada tarea haya sido ejecutada durante 1 quantum.
 Efectivamente, en el recuadro negro que aparece en la figura se observa un comportamiento muy similar al de Round-Robin.
 
 \begin{itemize}
-	\item tarea 0: wt:16.5, ta:87
-	\item tarea 1: wt:10, ta:71
-	\item tarea 2: wt:16.4, ta:103
-	\item tarea 3: wt:21,PU ta:105
-	\item tarea 4: wt:20.75, ta:104
-	\item  Waiting time: 16.93
-	\item  Turnaround time: 94
-\end{itemize} 
+	\item tarea 0: wt:21, ta:105
+	\item tarea 1: wt:13, ta:86
+	\item tarea 2: wt:20.6, ta:124
+	\item tarea 3: wt:26.75, ta:128
+	\item tarea 4: wt:21, ta:126
+	\item  Waiting time: 20.47
+	\item  Turnaround time: 113.8
+\end{itemize}
+
 
 Observemos que tanto el wating time como el turn around time de cada una de las tareas no difiere demasiado entre sí (tal como hubiera sucedido en el Round-Robin).
-Si realizamos 40 corridas del mismo experimento, para un único core pero variando el quantum entre 1 y 5, obtenemos los siguientes gráficos, en donde se muestran
+Si realizamos 20 corridas del mismo experimento, para un único core pero variando el quantum entre 1 y 5, obtenemos los siguientes gráficos, en donde se muestran
 el waiting-time promedio y el $turn-around$ promedio.
 
 
@@ -209,8 +210,8 @@ el waiting-time promedio y el $turn-around$ promedio.
 	pero variando los quantums entre 1 y 5}
 \end{figure}
 
-El waiting-time promedio de 40 repeticiones para 5 cores es de 17.5, cercano al experimento particular aislado, en donde obtuvimos 16.93.
-El turn-time promedio de 40 repeticiones para 5 cores es de 85, cercano al experimento particular aislado, en donde obtuvimos 94.
+El waiting-time promedio de 20 repeticiones para 5 cores es de 22, cercano al experimento particular aislado, en donde obtuvimos 20.47.
+El turn-time promedio de 20 repeticiones para 5 cores es de 100, cercano al experimento particular aislado, en donde obtuvimos 113.8
 
 ~
 
@@ -227,6 +228,7 @@ Si comparamos los resultados obtenidos con los de un scheduler round-robin obten
 \end{figure}
 
 Tal como era esperable, para lotes con tareas de igual cantidad de tickets ambos schedulers se comportan de forma muy similar.
+Sorprende a simple vista lo similares que son los gráficos correspondientes a uno y otro Scheduler, pero realmente corresponden a experimentos distintos.
 
 
 
@@ -276,23 +278,23 @@ en cada sorteo.
 \begin{figure}[H]
   \centering\includegraphics[scale=0.5]{graficos/lottery_console.jpg}
   \caption{SchedLottery en un lote de tareas interactivas. lote: *5 TaskConsola 5 1 1.
-	1 core, cambio de contexto y migración = 0, quantum = 5}
+	1 core, cambio de contexto = 1 y migración = 0, quantum = 5}
 \end{figure}
  
 Efectivamente, en el recuadro negro que aparece en la figura se observa un comportamiento muy similar al de Round-Robin.
 
 \begin{itemize}
-  \item tarea 0: wt:9.5, ta:30
-  \item tarea 1: wt:2, ta:15
-  \item tarea 2: wt:3.2, ta:27
-  \item tarea 3: wt:2.5, ta:21
-  \item tarea 4: wt:9, ta:29
-  \item Waiting time promedio: 5.24
-  \item Turnaround time promedio: 24.4
+  \item tarea 0: wt:8.16667, ta:60
+  \item tarea 1: wt:3.16667, ta:30
+  \item tarea 2: wt:7.16667, ta:54
+  \item tarea 3: wt:5.16667, ta:42
+  \item tarea 4: wt:7.83333, ta:58
+  \item Waiting time promedio: 6.3
+  \item Turnaround time promedio: 48.8
 \end{itemize}
 
 En esta corrida en particular el desvío estandar de ambas métricas es bastante grande, aunque interviene mucho el factor pseudoaleatorio.
-Al repetir el experimento 40 veces con los mismos parámetros, variando los quantums entre 1 y 5 obtenemos:
+Al repetir el experimento 20 veces con los mismos parámetros, variando los quantums entre 1 y 5 obtenemos:
 
 
 \begin{figure}
@@ -305,6 +307,46 @@ Al repetir el experimento 40 veces con los mismos parámetros, variando los quan
 	pero variando los quantums entre 1 y 5}
 \end{figure}
 
-Comparando con el Round-Robin para el mismo lote:
+Comparando con el Round-Robin para el mismo lote, nuevamente obtenemos valores muy similares. El mismo comportamiento analizado en el lote CPU puede
+observarse tambien en el lote interactivo, para tareas que se bloquean la misma cantidad de ticks.
 
-ARREGLAR: se está imprimiendo mal el waiting time del wtta.cpp y wtta2.cpp
+\begin{figure}
+\hfill
+\subfigure[]{\includegraphics[width=8.75cm]{graficos/console_rr_ta.jpg}}
+\hfill
+\subfigure[]{\includegraphics[width=8.75cm]{graficos/console_rr_wt.jpg}}
+\hfill
+\caption{Turn around time y waiting time del RoundRobin del lote de procesamiento interactivo con los mismos parámetros,
+	pero variando los quantums entre 1 y 5}
+\end{figure}
+
+~
+
+\textbf{\underline{Lote variado: Apreciación de los compensation tickets}}
+
+Los lotes en donde nos damos cuenta de la diferencia que marcan los compensation tickets es en aquellos que son mixtos. Combinan tareas bloqueantes con no
+bloqueantes, por lo que estas últimas deberían tener más tickets y por lo tanto, ganar más sorteos y reducir el turn around time.
+
+\begin{figure}[H]
+  \centering\includegraphics[scale=0.5]{graficos/mixto.png}
+  \caption{SchedLottery en un lote de tareas mixto. lote: TaskConsola 5 4 4, *2 TaskCPU 20.
+	1 core, cambio de contexto = 1 y migración = 0, quantum = 4}
+\end{figure}
+
+\begin{itemize}
+	\item tarea bloqueante: wt:7.5, ta:51
+	\item tarea cpu: wt:7.8, ta:65
+	\item tarea cpu: wt:8, ta:61
+	\item  Waiting time: 7.76667
+	\item  Turnaround time: 59
+\end{itemize}
+
+Hay que destacar que la tarea bloqueante gana muchos más sorteos que las otras dos tareas de procesamiento, ya que dispone de 4 tickets (las otras 2 cuentan con 1 único tickets).
+No es casualidad que la tarea bloqueante disponga del waiting time más bajo de todas.
+
+~
+
+\textbf{\underline{Sin la optimización de compensation tickets}}
+
+Sin las optimizaciones, tal como mencionamos anteriormente, el scheduler se comporta muy similar a un round robin, ya que todas tienen las mismas probabilidades de salir sorteadas.
+
